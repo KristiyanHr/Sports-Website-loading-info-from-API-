@@ -1,0 +1,40 @@
+.fixtures-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between each fixture */
+    margin-top: 20px;
+}
+
+.fixture {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%; /* Adjust as needed */
+}
+
+.team img {
+    max-width: 80px; /* Adjust logo size as needed */
+    height: auto;
+    margin-bottom: 5px;
+}
+
+.match-details {
+    text-align: center;
+    width: 40%; /* Adjust as needed */
+}
+
+.date-time {
+    font-weight: bold;
+}
+.date-picker-container{
+    padding-top: 2%;
+}
