@@ -2,6 +2,8 @@ const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const leagueRoutes = require('./routes/leagueRoutes');
+const authRoutes = require('./routes/authRoutes');
+const indexRouter = require('./routes/index');
 
 require('dotenv').config(); // Make sure this is at the top
 
@@ -24,15 +26,11 @@ app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 
 //routes
-app.get('/',(req,res)=>{
-    res.redirect('/leagues'); // Redirect to the leagues list
-});
-
-app.get('/about',(req,res)=>{
-    res.render('about', {title: 'About'});
-});
+app.use('/', indexRouter);
 
 app.use('/leagues', leagueRoutes); // Use the league routes
+
+app.use('/auth', authRoutes); // using auth routes
 
 //404 page // FUNCTION use() going trough all the options after all the code above it
 app.use((req,res)=>{

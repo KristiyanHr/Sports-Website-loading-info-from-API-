@@ -33,11 +33,15 @@ const homepageLeagues = [
     { name: 'Premier League', identifier: 'premier-league', apiId: 39 },
     { name: 'Bundesliga', identifier: 'bundesliga', apiId: 78 },     
     { name: 'La Liga', identifier: 'la-liga', apiId: 140 },      
-    { name: 'Serie A', identifier: 'serie-a', apiId: 135 }       
+    { name: 'Serie A', identifier: 'serie-a', apiId: 135 },
+    { name: 'Champions League', identifier: 'champions-league', apiId: 2 },
+    { name: 'Europa League', identifier: 'europa-league', apiId: 3 },
+    { name: 'World Cup', identifier: 'world-cup', apiId: 1 },
+    { name: 'Bulgarian First League', identifier: 'bulgarian-first-league', apiId: 172 }
 ];
 
 const league_index = (req, res) => {
-    res.render('partials/index', { title: 'Football Leagues', leagues: homepageLeagues });
+    res.render('index', { title: 'Football Leagues', leagues: homepageLeagues });
 };
 
 const league_details = async (req, res) => {
@@ -54,6 +58,14 @@ const league_details = async (req, res) => {
         viewName = 'leagues/la-liga';
     } else if (leagueIdentifier === 'serie-a') {
         viewName = 'leagues/serie-a';
+    }if (leagueIdentifier === 'champions-league') {
+        viewName = 'leagues/championsLeague';
+    } else if (leagueIdentifier === 'europa-league') {
+        viewName = 'leagues/europaLeague';
+    } else if (leagueIdentifier === 'world-cup') {
+        viewName = 'leagues/worldCup';
+    } else if (leagueIdentifier === 'bulgarian-first-league') {
+        viewName = 'leagues/bgFirstLeague';
     } else {
         return res.status(404).render('404', { title: 'League not found' });
     }

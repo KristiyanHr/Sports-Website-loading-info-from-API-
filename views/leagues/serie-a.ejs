@@ -1,59 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/css/style.css">
-</head>
+<%- include('../partials/head') %>
 <body>
 
-    <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="/">My Sports App</a>
-    </nav>
+    <%- include('../partials/navbar') %>
 
     <div class="date-picker-container">
         <form action="/leagues/serie-a" method="GET">
             <label for="matchDate">Select Date:</label>
-            <input type="date" id="matchDate" name="date">
+            <input type="date" id="matchDate" name="date" value="<%= selectedDate %>">
             <button type="submit">View Matches</button>
         </form>
     </div>
-
-    <div class="fixtures-container">
-        <% if (matches && matches.length > 0) { %>
-            <% matches.forEach(match => { %>
-                <div class="fixture">
-                    <div class="team home">
-                        <% if (match.teams.home.logo) { %>
-                            <img src="<%= match.teams.home.logo %>" alt="<%= match.teams.home.name %> Logo">
-                        <% } %>
-                        <p><%= match.teams.home.name %></p>
-                    </div>
     
-                    <div class="match-details">
-                        <p class="date-time">
-                            <%= new Date(match.fixture.date).toLocaleDateString() %>
-                            <%= new Date(match.fixture.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) %>
-                        </p>
-                        </div>
+    <%- include('../partials/fixtures-container') %>
     
-                    <div class="team away">
-                        <% if (match.teams.away.logo) { %>
-                            <img src="<%= match.teams.away.logo %>" alt="<%= match.teams.away.name %> Logo">
-                        <% } %>
-                        <p><%= match.teams.away.name %></p>
-                    </div>
-                </div>
-            <% }); %>
-        <% } else { %>
-            <p>No matches scheduled for <%= leagueName %> on <%= selectedDate %>.</p>
-        <% } %>
-    </div>
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <%- include('../partials/footer') %>
 </body>
 </html>

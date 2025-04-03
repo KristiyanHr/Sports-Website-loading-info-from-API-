@@ -3,17 +3,16 @@
 
     <%- include('../partials/navbar') %>
 
-
     <div class="date-picker-container">
-        <form action="/leagues/la-liga" method="GET">
+        <form action="/leagues/champions-league" method="GET">
             <label for="matchDate">Select Date:</label>
             <input type="date" id="matchDate" name="date" value="<%= selectedDate %>">
             <button type="submit">View Matches</button>
         </form>
     </div>
-
+    
     <%- include('../partials/fixtures-container') %>
-
+    
     <%- include('../partials/footer') %>
 </body>
 </html>
