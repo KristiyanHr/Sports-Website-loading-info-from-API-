@@ -58,7 +58,7 @@ const league_details = async (req, res) => {
         viewName = 'leagues/la-liga';
     } else if (leagueIdentifier === 'serie-a') {
         viewName = 'leagues/serie-a';
-    }if (leagueIdentifier === 'champions-league') {
+    }else if (leagueIdentifier === 'champions-league') {
         viewName = 'leagues/championsLeague';
     } else if (leagueIdentifier === 'europa-league') {
         viewName = 'leagues/europaLeague';
@@ -74,21 +74,18 @@ const league_details = async (req, res) => {
 
 
     try {
-         const selectedDate = req.query.date; // Get the date from the query parameters
+         const selectedDate = req.query.date;
          const today = new Date().toISOString().split('T')[0]; 
-
          const queryDate = selectedDate || today;
 
-        // Check if today's matches for this league are already in the database
         const cachedMatches = await Match.find({ leagueApiId: selectedLeague.apiId, date: queryDate});
 
         if (cachedMatches.length > 0) {
-            // If found in the database, render the view with the cached data
             res.render(viewName, {
                 title: `Matches in ${selectedLeague.name} on ${queryDate}`,
                 leagueName: selectedLeague.name,
                 matches: cachedMatches.map(match => match.matchData),
-                selectedDate: queryDate // Extract matchData
+                selectedDate: queryDate
             });
         } else {
             // If not found in the database, make an API call
