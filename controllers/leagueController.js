@@ -135,7 +135,8 @@ const league_details = async (req, res) => {
                     title: `Matches in ${selectedLeague.name} on ${queryDate}`,
                     leagueName: selectedLeague.name,
                     matches: matchesFromApi,
-                    selectedDate: queryDate
+                    selectedDate: queryDate,
+                    selectedLeague: selectedLeague
                 });
             } else {
                 // If no matches are returned from the API
