@@ -5,8 +5,7 @@ const mongoose = require('mongoose');
 const leagueRoutes = require('./routes/leagueRoutes');
 const authRoutes = require('./routes/authRoutes');
 const indexRouter = require('./routes/index');
-
-require('dotenv').config(); // Make sure this is at the top
+require('dotenv').config();
 
 const dbURI = 'mongodb+srv://netninja:test1234@nodeandmongo.ciemb.mongodb.net/Sport_Website?retryWrites=true&w=majority&appName=NodeAndMongo';
 
@@ -25,6 +24,12 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.use(session({
+    secret: process.env.SESSION_SECRET|| 'TheMostSecretSecretKey',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {secure: process.env.NODE_ENV === 'production'}
+}));
 
 //routes
 app.use('/', indexRouter);

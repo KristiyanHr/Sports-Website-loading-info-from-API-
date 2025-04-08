@@ -1,8 +1,6 @@
-// Import the User model
 const User = require('../models/user');
-const bcrypt = require('bcrypt'); // We'll need this for password hashing
+const bcrypt = require('bcrypt'); 
 
-// Function to display the registration form
 const registerForm = (req, res) => {
     res.render('auth/register', { title: 'Register', errors: [] }); 
 };
@@ -69,17 +67,11 @@ const registerUser = async (req, res) => {
 
     if (!username || !email || !password || !password2) {
         errors.push({ message: 'Моля, попълнете всички полета.' });
-    }
-
-    if (password !== password2) {
+    }else if (password !== password2) {
         errors.push({ message: 'Паролите не съвпадат.' });
-    }
-
-    if (password.length < 6) {
+    }else if (password.length < 6) {
         errors.push({ message: 'Паролата трябва да бъде поне 6 символа.' });
-    }
-
-    if (errors.length > 0) {
+    }else if (errors.length > 0) {
         console.log("Rendering with initial errors");
         return res.render('auth/register', { title: 'Register', errors, username, email });
     }
@@ -88,7 +80,7 @@ const registerUser = async (req, res) => {
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
         if (existingUser) {
-            errors.push({ message: 'Потребител с такова потребителско име или имейл вече съществува.' });
+            errors.push({ message: 'User with this username or password already exists.' });
             console.log("Rendering with existing user error");
             return res.render('auth/register', { title: 'Register', errors, username, email });
         }
@@ -113,21 +105,84 @@ const registerUser = async (req, res) => {
                     console.log("Rendering with Mongoose validation error");
                     return res.render('auth/register', { title: 'Register', errors, username, email });
                 }
-                console.error('Грешка при запазване на потребител:', err);
+                console.error('Error when saving user:', err);
                 console.log("Sending 500 for save error");
-                res.status(500).send('Грешка при запазване на потребител.');
+                res.status(500).send('Error when saving user.');
                 return;
             });
 
     } catch (error) {
-        console.error('Грешка преди запазване на потребител:', error);
+        console.error('Error when saving user:', error);
         console.log("Sending 500 for pre-save error");
-        res.status(500).send('Грешка преди запазване на потребител.');
+        res.status(500).send('Error when saving user.');
         return;
     }
 };
 
+const loginForm = (req, res) => {
+    res.render('auth/login', { title: 'Login', errors: [] });
+};
+
+const loginUser = async (req, res) => {
+    const { username, password } = req.body;
+    const errors = [];
+
+    if (!username || !password) {
+        errors.push({ message: 'Please complete all fields.' });
+        return res.render('auth/login', { title: 'Login', errors });
+    }
+
+    try {
+
+        const user = await User.findOne({ $or: [{ username }, { email: username }] });
+
+        if (!user) {
+            errors.push({ message: 'Invali username or password.' });
+            return res.render('auth/login', { title: 'Вход', errors });
+        }
+
+        bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+                console.error('Error when comparing passwords:', err);
+                errors.push({ message: 'Error while logging in.' });
+                return res.render('auth/login', { title: 'Login', errors });
+            }
+
+            if (isMatch) {
+                req.session.user = {
+                    id: user._id,
+                    username: user.username,
+                    email: user.email
+                };
+                res.redirect('/dashboard?login_success=true');
+                console.log('Успешен вход, пренасочване към дашборд.');
+            } else {
+                errors.push({ message: 'Invalid username or password.' });
+                return res.render('auth/login', { title: 'Login', errors });
+            }
+        });
+
+    } catch (error) {
+        console.error('Error while logging in:', error);
+        errors.push({ message: 'Error while logging in.' });
+        return res.render('auth/login', { title: 'Login', errors });
+    }
+};
+
+const logout = (req, res) => {
+    req.session.destroy(err => {
+        if (err) {
+            console.error('Error when loggin out:', err);
+            return res.redirect('/dashboard'); 
+        }
+        res.redirect('/login'); 
+    });
+};
+
 module.exports = {
+    registerForm,
     registerUser,
-    registerForm
+    loginForm,
+    loginUser,
+    logout
 }
