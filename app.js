@@ -31,7 +31,11 @@ app.use('/', indexRouter);
 
 app.use('/leagues', leagueRoutes); // Use the league routes
 
-app.use('/auth', authRoutes); // using auth routes
+app.use('/', authRoutes); // using auth routes
+
+// app.use('/games', (req, res) => {
+//     res.render('showGames', { title: 'Класиране от минал сезон' });
+// });
 
 //404 page // FUNCTION use() going trough all the options after all the code above it
 app.use((req,res)=>{

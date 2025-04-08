@@ -85,13 +85,13 @@ const league_details = async (req, res) => {
                 title: `Matches in ${selectedLeague.name} on ${queryDate}`,
                 leagueName: selectedLeague.name,
                 matches: cachedMatches.map(match => match.matchData),
-                selectedDate: queryDate
+                selectedDate: queryDate,
+                selectedLeague: selectedLeague
             });
         } else {
-            // If not found in the database, make an API call
             const apiKey = process.env.RAPIDAPI_KEY;
             const fixturesApiUrl = 'https://api-football-v1.p.rapidapi.com/v3/fixtures';
-            const currentSeason = '2024'; // Ensure this is the correct season
+            const currentSeason = '2024'; 
 
             const options = {
                 method: 'GET',
@@ -113,6 +113,7 @@ const league_details = async (req, res) => {
             if (matchesFromApi && matchesFromApi.length > 0) {
                 // Store the fetched matches in the database
                 const savedMatches = [];
+                // console.log(`Получени ${matchesFromApi.length} мача от API-то.`); - DEBUGGING
                 for (const match of matchesFromApi) {
                     const newMatch = new Match({
                         fixtureId: match.fixture.id,
@@ -123,6 +124,8 @@ const league_details = async (req, res) => {
                     try {
                         const savedMatch = await newMatch.save();
                         savedMatches.push(savedMatch);
+                        console.log( new Date(selectedDate).getMonth() > 6 ? new Date(selectedDate).getFullYear() : new Date(selectedDate).getFullYear() - 1);
+                        // console.log(`Мач с ID ${match.fixture.id} беше успешно запазен.`); - DEBUGGING
                     } catch (error) {
                         // Handle potential duplicate key error (fixtureId already exists)
                         if (error.code !== 11000) {
@@ -144,7 +147,8 @@ const league_details = async (req, res) => {
                     title: `Matches in ${selectedLeague.name} on ${queryDate}`,
                     leagueName: selectedLeague.name,
                     matches: [],
-                    selectedDate: queryDate
+                    selectedDate: queryDate,
+                    selectedLeague: selectedLeague
                 });
             }
         }
