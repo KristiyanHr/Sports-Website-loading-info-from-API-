@@ -137,7 +137,7 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ $or: [{ username }, { email: username }] });
 
         if (!user) {
-            errors.push({ message: 'Invali username or password.' });
+            errors.push({ message: 'Invalid username or password.' });
             return res.render('auth/login', { title: 'Вход', errors });
         }
 
@@ -155,7 +155,7 @@ const loginUser = async (req, res) => {
                     email: user.email
                 };
                 res.redirect('/dashboard?login_success=true');
-                console.log('Успешен вход, пренасочване към дашборд.');
+                console.log('Login successful, redirecting to dashboard.');
             } else {
                 errors.push({ message: 'Invalid username or password.' });
                 return res.render('auth/login', { title: 'Login', errors });
