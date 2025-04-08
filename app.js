@@ -1,4 +1,5 @@
 const express = require('express');
+const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 const leagueRoutes = require('./routes/leagueRoutes');
