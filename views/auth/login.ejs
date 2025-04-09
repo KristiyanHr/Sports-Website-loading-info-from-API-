@@ -43,13 +43,15 @@
 
         loginForm.addEventListener('submit', (event) => {
             const usernameValue = usernameInput.value.trim();
-            console.log('Въведената стойност е:', usernameValue);
+            console.log('The value of the input is:', usernameValue);
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             const usernameRegex = /^[a-zA-Z0-9_-]+$/;
 
-            if(usernameValue === ' '){
+            if(usernameValue === ''){
+                event.preventDefault();
+                alert('Please enter valid username or email address');
                 return;
-            }else if(!emailRegex.test(usernameValue) || !usernameRegex.test(usernameValue)){
+            }else if(!emailRegex.test(usernameValue) && !usernameRegex.test(usernameValue)){
                 event.preventDefault();
                 alert('Please enter valid username or email address');
                 return;
