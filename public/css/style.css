@@ -38,3 +38,7 @@
 .date-picker-container{
     padding-top: 2%;
 }
+footer{
+    display: flex;
+    justify-content: center;
+}
