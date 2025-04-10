@@ -257,11 +257,23 @@ const updatePassword = async (req, res) => {
     }
 };
 
+const profilePage = async (req, res) => {
+    try {
+        const user = await User.findById(req.session.user.id);
+        if (!user) {
+            return res.redirect('/dashboard');
+        }
+        res.render('auth/profile', { title: 'My Profile', user: req.session.user, profileData: user });
+    } catch (error) {
+        console.error('Error while loading profil info:', error);
+        res.status(500).send('Error while loading profil info.');
+    }
+};
 module.exports = {
     registerForm, registerUser,
     loginForm, loginUser, logout,
     forgotPasswordForm, forgotPassword,
     resetPasswordForm,
     updatePassword,
-
+    profilePage
 }   
