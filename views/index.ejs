@@ -1,31 +1,50 @@
-<%- include('partials/head') %>
+<%- include('./partials/head') %>
 <body>
-    <%- include('partials/navbar') %>
-    
+    <%- include('./partials/navbar') %>
 
-    <div class="container mt-4">
-        <h1><%= title %></h1>
-        <div class="row">
-            <% if (leagues && leagues.length > 0) { %>
-                <% leagues.forEach(league => { %>
-                    <div class="col-md-3 mb-3">
-                        <p>
-                            <a href="leagues/<%= league.identifier %>" class="btn btn-outline-primary btn-block">
-                                <%= league.name %>
-                            </a>
-                        </p>
-                    </div>
-                <% }); %>
-            <% } else { %>
-                <p>No leagues available.</p>
-            <% } %>
-        </div>
+    <div class="container mt-5">
+        <h1>Текущи мачове на живо</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Домакин</th>
+                    <th>Резултат</th>
+                    <th>Гост</th>
+                    <th>Статус</th>
+                    <th>Минута</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (liveMatches && liveMatches.length > 0) { %>
+                    <% liveMatches.forEach(match => { %>
+                        <tr>
+                            <td><%= match.teams.home.name %></td>
+                            <td>
+                                <% if (match.score && match.score.fulltime) { %>
+                                    <%= match.score.fulltime.home %> - <%= match.score.fulltime.away %>
+                                <% } else { %>
+                                    -
+                                <% } %>
+                            </td>
+                            <td><%= match.teams.away.name %></td>
+                            <td><%= match.fixture.status.long %></td>
+                            <td>
+                                <% if (match.fixture.status.elapsed) { %>
+                                    <%= match.fixture.status.elapsed %>'
+                                <% } else if (match.fixture.status.short === 'NS') { %>
+                                    Предстои
+                                <% } else { %>
+                                    -
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }); %>
+                <% } else { %>
+                    <tr><td colspan="5">Няма текущи мачове на живо.</td></tr>
+                <% } %>
+            </tbody>
+        </table>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <%- include('partials/footer') %>
 </body>
 </html>
