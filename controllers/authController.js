@@ -4,64 +4,9 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto')
 
 const registerForm = (req, res) => {
-    res.render('auth/register', { title: 'Register', errors: [] }); 
+    res.render('auth/register', { title: 'Register', errors: [], user: req.session.user }); 
 };
 
-//     const { username, email, password, password2 } = req.body;
-//     const errors = [];
-
-//     if(!username || !email || !password || !password2){
-//         errors.push({message: 'Please enter all fields!'});
-//     }else if(password !== password2){
-//         errors.push({message: 'Passwords dont match!'});
-//     }else if(password.length < 6){
-//         errors.push({message: 'Password should be at least 6 symbols'})
-//     }else if(errors.length > 0){
-//         return res.render('auth/register', {title: 'Register', errors, username, email});
-//     }
-
-//     try{
-//         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
-
-//         if(existingUser){
-//             errors.push({message: 'User with this username or email already exists.'});
-//             return res.render('auth/register', {title: 'Register', errors, username, email});
-//         }
-
-//         const newUser = new User({
-//             username,
-//             email,
-//             password
-//         });
-
-//         await newUser.save()
-//             .then(user => {
-//                 // Ако запазването е успешно, пренасочваме
-//                 res.redirect('/login?registration_success=true');
-//                 return;
-//             })
-//             .catch(err => {
-//                 if (err.name === 'ValidationError') {
-//                     Object.values(err.errors).forEach(({ properties }) => {
-//                         errors.push({ message: properties.message });
-//                     });
-//                     return res.render('auth/register', { title: 'Register', errors, username, email });
-//                 }
-//                 console.error('Грешка при запазване на потребител:', err);
-//                 res.status(500).send('Грешка при запазване на потребител.');
-//                 return;
-//             });
-
-//         res.redirect('/login?registration_success=true');
-//         return;
-
-//     }catch(error){
-//         console.error('Error in registration!', error);
-//         res.status(500).send('Error in registration!');
-//     }
-
-    
-// };
 const registerUser = async (req, res) => {
     const { username, email, password, password2 } = req.body;
     const errors = [];
@@ -74,7 +19,7 @@ const registerUser = async (req, res) => {
         errors.push({ message: 'Паролата трябва да бъде поне 6 символа.' });
     }else if (errors.length > 0) {
         console.log("Rendering with initial errors");
-        return res.render('auth/register', { title: 'Register', errors, username, email });
+        return res.render('auth/register', { title: 'Register', errors, username, email, user: req.session.user });
     }
 
     try {
@@ -83,7 +28,7 @@ const registerUser = async (req, res) => {
         if (existingUser) {
             errors.push({ message: 'User with this username or password already exists.' });
             console.log("Rendering with existing user error");
-            return res.render('auth/register', { title: 'Register', errors, username, email });
+            return res.render('auth/register', { title: 'Register', errors, username, email, user: req.session.user });
         }
 
         const newUser = new User({
@@ -104,7 +49,7 @@ const registerUser = async (req, res) => {
                         errors.push({ message: properties.message });
                     });
                     console.log("Rendering with Mongoose validation error");
-                    return res.render('auth/register', { title: 'Register', errors, username, email });
+                    return res.render('auth/register', { title: 'Register', errors, username, email, user: req.session.user});
                 }
                 console.error('Error when saving user:', err);
                 console.log("Sending 500 for save error");
@@ -121,7 +66,7 @@ const registerUser = async (req, res) => {
 };
 
 const loginForm = (req, res) => {
-    res.render('auth/login', { title: 'Login', errors: [] });
+    res.render('auth/login', { title: 'Login', errors: [], user: req.session.user});
 };
 
 const loginUser = async (req, res) => {
@@ -130,7 +75,7 @@ const loginUser = async (req, res) => {
 
     if (!username || !password) {
         errors.push({ message: 'Please complete all fields.' });
-        return res.render('auth/login', { title: 'Login', errors });
+        return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
     }
 
     try {
@@ -139,14 +84,14 @@ const loginUser = async (req, res) => {
 
         if (!user) {
             errors.push({ message: 'Invalid username or password.' });
-            return res.render('auth/login', { title: 'Вход', errors });
+            return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
         }
 
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) {
                 console.error('Error when comparing passwords:', err);
                 errors.push({ message: 'Error while logging in.' });
-                return res.render('auth/login', { title: 'Login', errors });
+                return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
             }
 
             if (isMatch) {
@@ -159,14 +104,14 @@ const loginUser = async (req, res) => {
                 console.log('Login successful, redirecting to dashboard.');
             } else {
                 errors.push({ message: 'Invalid username or password.' });
-                return res.render('auth/login', { title: 'Login', errors });
+                return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
             }
         });
 
     } catch (error) {
         console.error('Error while logging in:', error);
         errors.push({ message: 'Error while logging in.' });
-        return res.render('auth/login', { title: 'Login', errors });
+        return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
     }
 };
 
@@ -311,14 +256,12 @@ const updatePassword = async (req, res) => {
         return res.render('auth/forgot-password', { title: 'Forgot Password', errors }); 
     }
 };
+
 module.exports = {
-    registerForm,
-    registerUser,
-    loginForm,
-    loginUser,
-    logout,
-    forgotPasswordForm,
-    forgotPassword,
+    registerForm, registerUser,
+    loginForm, loginUser, logout,
+    forgotPasswordForm, forgotPassword,
     resetPasswordForm,
-    updatePassword
+    updatePassword,
+
 }   

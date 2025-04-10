@@ -41,7 +41,7 @@ const homepageLeagues = [
 ];
 
 const league_index = (req, res) => {
-    res.render('index', { title: 'Football Leagues', leagues: homepageLeagues });
+    res.render('index', { title: 'Football Leagues', leagues: homepageLeagues, user: req.session.user});
 };
 
 const league_details = async (req, res) => {
@@ -86,7 +86,8 @@ const league_details = async (req, res) => {
                 leagueName: selectedLeague.name,
                 matches: cachedMatches.map(match => match.matchData),
                 selectedDate: queryDate,
-                selectedLeague: selectedLeague
+                selectedLeague: selectedLeague,
+                user: req.session.user
             });
         } else {
             const apiKey = process.env.RAPIDAPI_KEY;
@@ -139,7 +140,8 @@ const league_details = async (req, res) => {
                     leagueName: selectedLeague.name,
                     matches: matchesFromApi,
                     selectedDate: queryDate,
-                    selectedLeague: selectedLeague
+                    selectedLeague: selectedLeague,
+                    user: req.session.user 
                 });
             } else {
                 // If no matches are returned from the API
@@ -148,7 +150,8 @@ const league_details = async (req, res) => {
                     leagueName: selectedLeague.name,
                     matches: [],
                     selectedDate: queryDate,
-                    selectedLeague: selectedLeague
+                    selectedLeague: selectedLeague,
+                    user: req.session.user 
                 });
             }
         }
