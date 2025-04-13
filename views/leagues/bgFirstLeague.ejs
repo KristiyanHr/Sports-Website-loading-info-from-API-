@@ -2,9 +2,8 @@
 <body>
 
     <%- include('../partials/navbar') %>
-    <button class="btn btn-outline-primary btn-sm mb-3" onclick="addLeagueToFavourites('<%= selectedLeague.identifier %>')">
-        Добави към любими
-    </button>
+    <button class="btn btn-outline-primary btn-sm mb-3"
+    onclick="addLeagueToFavourites('<%= selectedLeague.identifier %>')">Add to Favourites</button>
     <div class="date-picker-container">
         <form action="/leagues/bulgarian-first-league" method="GET">
             <label for="matchDate">Select Date:</label>

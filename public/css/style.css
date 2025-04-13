@@ -122,8 +122,10 @@ body {
     color: #e0e0e0;
     margin-top: 0;
 }
+.style-me{
+    width: 70%;
+}
 
-/* Допълнителни стилове за навигацията (ако е необходимо) */
 nav {
     background-color: #333333;
     padding: 10px 0;
@@ -149,7 +151,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    color: #bb86fc;
+    color: #2d055e;
 }
 
 /* Стилове за футъра (ако имате) */

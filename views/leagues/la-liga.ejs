@@ -2,7 +2,9 @@
 <body>
 
     <%- include('../partials/navbar') %>
-
+    
+    <button class="btn btn-outline-primary btn-sm mb-3"
+    onclick="addLeagueToFavourites('<%= selectedLeague.identifier %>')">Add to Favourites</button>
 
     <div class="date-picker-container">
         <form action="/leagues/la-liga" method="GET">
@@ -13,6 +15,8 @@
     </div>
 
     <%- include('../partials/fixtures-container') %>
+    
+    <%- include('../partials/favouritesScript') %>
 
     <%- include('../partials/footer') %>
 </body>
