@@ -13,7 +13,6 @@ const fetchLiveMatches = async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    console.log(response.data);
     res.render('index', { title:"Live matches", liveMatches: response.data.response, user: req.session.user });
   } catch (error) {
     console.error('Error while fetching live matches:', error);

@@ -23,11 +23,14 @@ const userSchema = new mongoose.Schema({
         required: true,
         minlength: 6
     },
+    favouriteLeagues: {
+      type: [String],
+      default: []
+    },
     resetPasswordToken: String,
     resetPasswordExpires: Date
 }, { timestamps: true });
 
-// Hash the password before saving the user
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) {
         return next();

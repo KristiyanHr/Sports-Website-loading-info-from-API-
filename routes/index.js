@@ -4,13 +4,7 @@ const leagueController = require('../controllers/leagueController');
 const matchController = require('../controllers/matchController');
 const liveMatchesController = require('../controllers/liveMatchesController');
 const dashboardController = require('../controllers/dashboardController');
-
-const ensureAuthenticated = (req, res, next) => {
-    if (req.session.user) {
-        return next();
-    }
-    res.redirect('/login');
-};
+const { ensureAuthenticated } = require('../middleware/authMiddleware');
 
 router.get('/', liveMatchesController.fetchLiveMatches);
 

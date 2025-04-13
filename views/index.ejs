@@ -1,4 +1,4 @@
-<%- include('./partials/head') %>
+<%- include('./partials/indexHead') %>
 <body>
     <%- include('./partials/navbar') %>
 
@@ -7,21 +7,23 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Домакин</th>
-                    <th>Резултат</th>
-                    <th>Гост</th>
-                    <th>Статус</th>
-                    <th>Минута</th>
+                    <th>Home</th>
+                    <th>Result</th>
+                    <th>Away</th>
+                    <th>Status</th>
+                    <th>Minute</th>
+                    <th>Odds</th>
                 </tr>
             </thead>
             <tbody>
                 <% if (liveMatches && liveMatches.length > 0) { %>
                     <% liveMatches.forEach(match => { %>
-                        <tr>
+                        <% const matchUrl = `/match-details/${match.fixture.id}`; %>
+                        <tr onclick="window.location.href='<%= matchUrl %>';" style="cursor: pointer;">
                             <td><%= match.teams.home.name %></td>
                             <td>
-                                <% if (match.score && match.score.fulltime) { %>
-                                    <%= match.score.fulltime.home %> - <%= match.score.fulltime.away %>
+                                <% if (match.goals) { %>
+                                    <%= match.goals.home %> : <%= match.goals.away %>
                                 <% } else { %>
                                     -
                                 <% } %>
@@ -32,7 +34,7 @@
                                 <% if (match.fixture.status.elapsed) { %>
                                     <%= match.fixture.status.elapsed %>'
                                 <% } else if (match.fixture.status.short === 'NS') { %>
-                                    Предстои
+                                    Starts soon
                                 <% } else { %>
                                     -
                                 <% } %>

@@ -100,8 +100,15 @@ const loginUser = async (req, res) => {
                     username: user.username,
                     email: user.email
                 };
-                res.redirect('/dashboard?login_success=true');
-                console.log('Login successful, redirecting to dashboard.');
+                req.session.save(err => { // Изрично запазване на сесията
+                    if (err) {
+                        console.error('Error saving session:', err);
+                        return res.redirect('/login'); // Обработете грешката според нуждите
+                    }
+                    res.redirect('/dashboard?login_success=true');
+                    console.log('Login successful, redirecting to dashboard.');
+                });
+                return; // Добавете return, за да предотвратите изпълнението на следващия код
             } else {
                 errors.push({ message: 'Invalid username or password.' });
                 return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
@@ -126,7 +133,7 @@ const logout = (req, res) => {
 };
 
 const forgotPasswordForm = (req, res) => {
-    res.render('auth/forgot-password', { title: 'Forgotten password', errors: [] });
+    res.render('auth/forgot-password', { title: 'Forgotten password', errors: [], user: req.user });
 };
 
 const forgotPassword = async (req, res) => {
@@ -135,7 +142,7 @@ const forgotPassword = async (req, res) => {
 
     if (!email) {
         errors.push({ message: 'Please enter valid email address.' });
-        return res.render('auth/forgot-password', { title: 'Forgotten password', errors });
+        return res.render('auth/forgot-password', { title: 'Forgotten password', errors , user: req.user });
     }
 
     try {
@@ -143,7 +150,7 @@ const forgotPassword = async (req, res) => {
 
         if (!user) {
             errors.push({ message: 'User with this email is not existing.' });
-            return res.render('auth/forgot-password', { title: 'Forgotten password', errors });
+            return res.render('auth/forgot-password', { title: 'Forgotten password', errors, user: req.user });
         }
         const resetToken = crypto.randomBytes(32).toString('hex');
         user.resetPasswordToken = resetToken;
@@ -181,7 +188,7 @@ const forgotPassword = async (req, res) => {
             if (error) {
                 console.error('Error when sending the email:', error);
                 errors.push({ message: 'There was an error when sending the email. Please try again later.' });
-                return res.render('auth/forgot-password', { title: 'Forgotten password', errors });
+                return res.render('auth/forgot-password', { title: 'Forgotten password', errors , user: req.user });
             } else {
                 console.log('Email sent:', info.response);
                 res.redirect('/login?reset_request_sent=true');
@@ -191,7 +198,7 @@ const forgotPassword = async (req, res) => {
     } catch (error) {
         console.error('Error while reseting the password:', error);
         errors.push({ message: 'Error. Please try again later.' });
-        return res.render('auth/forgot-password', { title: 'Forgotten password', errors });
+        return res.render('auth/forgot-password', { title: 'Forgotten password', errors , user: req.user });
     }
 };
 

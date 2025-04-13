@@ -41,7 +41,7 @@ const homepageLeagues = [
 ];
 
 const league_index = (req, res) => {
-    res.render('index', { title: 'Football Leagues', leagues: homepageLeagues, user: req.session.user});
+    res.render('leagues/leagueIndex', { title: 'Football Leagues', leagues: homepageLeagues, user: req.session.user});
 };
 
 const league_details = async (req, res) => {

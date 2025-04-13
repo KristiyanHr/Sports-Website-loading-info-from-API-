@@ -1,0 +1,25 @@
+<%- include('../partials/head') %>
+    <%- include('../partials/navbar') %>
+
+    <div class="container">
+        <div class="league-list-container">
+            <h1>Popular Leagues</h1>
+            <ul class="league-list">
+                <% if (leagues.length > 0) { %>
+                    <% leagues.forEach(league => { %>
+                        <li>
+                            <a href="/leagues/<%= league.identifier %>"><%= league.name %></a>
+                        </li>
+                    <% }); %>
+                <% } else { %>
+                    <p>No available leagues.</p>
+                <% } %>
+            </ul>
+            </div>
+        <div class="main-content">
+            <h2>Todays fixtures</h2>
+            <p>Chose a league from the list to see its matches.</p>
+        </div>
+    </div>
+
+    <%- include('../partials/footer') %>

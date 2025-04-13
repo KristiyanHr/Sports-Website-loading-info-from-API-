@@ -1,0 +1,24 @@
+<script>
+    function addLeagueToFavourites(leagueIdentifier) {
+        console.log('Adding league to favourites:', JSON.stringify({ leagueId: leagueIdentifier }) );
+        fetch('/favourites/add-favourite', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ leagueId: leagueIdentifier }) 
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message) {
+                alert(data.message);
+            } else {
+                console.log('Лигата е добавена към любими.');
+                alert('Лигата е добавена към любими.');
+            }
+        })
+        .catch(error => {
+            console.error('Грешка при добавяне към любими:', error);
+        });
+    }
+</script>

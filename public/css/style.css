@@ -61,3 +61,102 @@ footer{
 .table tbody tr:nth-child(even) {
     background-color: #f9f9f9;
 }
+body {
+    background-color: #181818; /* Тъмно сив фон */
+    color: #e0e0e0; /* Светъл текст */
+    font-family: sans-serif; /* Основен шрифт */
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 960px; /* Максимална ширина на съдържанието */
+    margin: 20px auto; /* Центриране и отстъп отгоре и отдолу */
+    padding: 20px;
+    background-color: #222222; /* По-тъмен фон за контейнера */
+    border-radius: 8px; /* Заоблени ъгли */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Лека сянка */
+    display: flex; /* За да подредим елементите в контейнера */
+}
+
+.league-list-container {
+    flex: 0 0 250px; /* Фиксирана ширина за списъка с лиги */
+    padding-right: 20px;
+    border-right: 1px solid #444444; /* Разделителна линия */
+}
+
+.league-list-container h1 {
+    color: #bb86fc; /* Акцентен цвят за заглавието */
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.5em;
+}
+
+.league-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.league-list li {
+    padding: 8px 0;
+}
+
+.league-list li a {
+    display: block; /* За да може цялата област на елемента да е кликаема */
+    color: #e0e0e0;
+    text-decoration: none; /* Премахване на подчертаването на линковете */
+    transition: color 0.3s ease; /* Плавна смяна на цвета при ховър */
+}
+
+.league-list li a:hover {
+    color: #bb86fc; 
+}
+
+.main-content {
+    flex-grow: 1; /* Заема останалото място в контейнера */
+    padding-left: 20px;
+}
+
+.main-content h2 {
+    color: #e0e0e0;
+    margin-top: 0;
+}
+
+/* Допълнителни стилове за навигацията (ако е необходимо) */
+nav {
+    background-color: #333333;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: #f0f0f0;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #bb86fc;
+}
+
+/* Стилове за футъра (ако имате) */
+footer {
+    background-color: #333333;
+    color: #e0e0e0;
+    text-align: center;
+    padding: 10px 0;
+    margin-top: 20px;
+}

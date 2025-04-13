@@ -1,0 +1,108 @@
+/* Контейнер на основното съдържание */
+.container.mt-5 {
+    background-color: #0b0b0c; /* фон */
+    color: #f8fafc; /* Много светлосив текст */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.container.mt-5 h1 {
+    color: rgb(187, 134, 252); /* Син акцент за заглавието */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Таблица с мачове */
+.table {
+    background-color: #090d16; /* По-тъмен фон за таблицата */
+    color: #cbd5e1; /* Светлосив текст в таблицата */
+    margin-bottom: 0; /* Премахнете долния марж, ако е необходимо */
+}
+
+.table thead th {
+    background-color: #0a0101; /* Тъмно син цвят за хедъра на таблицата */
+    color: #f1f5f9; /* Много светлосив текст в хедъра */
+    border-bottom: 2px solid #475569; /* По-тъмен син кант под хедъра */
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #475569; /* Тънък тъмен син кант между редовете */
+}
+
+.table tbody tr:last-child {
+    border-bottom: none; /* Премахва канта на последния ред */
+}
+
+.table tbody td {
+    border-top: none;
+    padding: 12px 8px;
+    vertical-align: middle;
+}
+
+/* Стилове за редовете през един (striped) */
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(55, 65, 81, 0.3); /* Леко по-тъмен нюанс за нечетните редове */
+}
+
+/* Настройка на ширината на колоните с проценти */
+.table thead th:nth-child(1) { /* Първа колона (Домакин) */
+    width: 25%;
+    text-align: center; 
+}
+
+.table thead th:nth-child(2) { /* Втора колона (Резултат) */
+    width: 10%;
+    text-align: center;
+}
+
+.table thead th:nth-child(3) { /* Трета колона (Гост) */
+    width: 25%;
+    text-align: center;
+}
+
+.table thead th:nth-child(4) { /* Четвърта колона (Статус) */
+    width: 15%;
+    text-align: center;
+}
+
+.table thead th:nth-child(5) { /* Пета колона (Минута) */
+    width: 10%;
+    text-align: center;
+}
+
+.table thead th:nth-child(6) { /* Шеста колона (Odds) */
+    width: 15%;
+    text-align: center;
+}
+
+/* Можете да приложите същите ширини и към <td> елементите, ако е необходимо */
+.table tbody td:nth-child(1) {
+    /* width: 25%; */ /* Ако е необходимо */
+    text-align: center; /* Ляво подравняване за името на домакина */
+}
+
+.table tbody td:nth-child(2) {
+    text-align: center;
+}
+
+.table tbody td:nth-child(3) {
+    /* width: 25%; */ /* Ако е необходимо */
+    text-align: center;
+}
+
+.table tbody td:nth-child(4) {
+    text-align: center;
+}
+
+.table tbody td:nth-child(5) {
+    text-align: center;
+}
+
+.table tbody td:nth-child(6) {
+    text-align: center;
+}
+.table tbody tr:hover {
+    background-color: #4c00991a; 
+    cursor: pointer; 
+}

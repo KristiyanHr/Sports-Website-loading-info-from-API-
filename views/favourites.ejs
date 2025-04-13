@@ -1,0 +1,25 @@
+<%- include('./partials/head') %>
+    <%- include('./partials/navbar') %>
+
+    <div class="container mt-5">
+        <h1><%= title %></h1>
+
+        <% if (user) { %>
+            <p>Hello, <%= user.username %>!</p>
+
+            <h2>Your favourite leagues:</h2>
+            <% if (favouriteLeagues && favouriteLeagues.length > 0) { %>
+                <ul>
+                    <% favouriteLeagues.forEach(league => { %>
+                        <li><%= league.name %></li>
+                    <% }); %>
+                </ul>
+            <% } else { %>
+                <p>You still havent anded any favourites.</p>
+            <% } %>
+
+        <% } else { %>
+            <p>Please log in to see favourite leagues.</p>
+        <% } %>
+    </div>
+<%- include('./partials/footer') %>

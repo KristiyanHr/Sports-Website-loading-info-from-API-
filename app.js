@@ -5,38 +5,49 @@ const mongoose = require('mongoose');
 const leagueRoutes = require('./routes/leagueRoutes');
 const authRoutes = require('./routes/authRoutes');
 const indexRouter = require('./routes/index');
+const MongoStore = require('connect-mongo');
+const favouriteRoutes = require('./routes/favouriteRoutes');  
 require('dotenv').config();
 
-const dbURI = 'mongodb+srv://netninja:test1234@nodeandmongo.ciemb.mongodb.net/Sport_Website?retryWrites=true&w=majority&appName=NodeAndMongo';
+const dbURI = 'mongodb://localhost:27017/Sport_Website';
 
 const app = express();
 
 //connect to DB
-mongoose.connect(dbURI)
+mongoose.connect(dbURI) 
     .then((result) => app.listen(3000))
     .catch((err) => console.log(err));
-
 
 //register view engine
 app.set('view engine', 'ejs');
 
 //middleware and static files(css, etc)
+app.use(express.json());
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use(session({
-    secret: process.env.SESSION_SECRET|| 'TheMostSecretSecretKey',
+    secret: process.env.SESSION_SECRET || 'TheMostSecretSecretKey',
     resave: false,
     saveUninitialized: false,
-    cookie: {secure: process.env.NODE_ENV === 'production'}
+    store: MongoStore.create({
+        mongoUrl: dbURI,
+        autoRemove: 'native'
+    }),
+    cookie: {
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: 24 * 60 * 60 * 1000 
+    }
 }));
 
 //routes
 app.use('/', indexRouter);
 
-app.use('/leagues', leagueRoutes); // Use the league routes
+app.use('/leagues', leagueRoutes); 
 
-app.use('/', authRoutes); // using auth routes
+app.use('/', authRoutes); 
+
+app.use('/favourites', favouriteRoutes);
 
 // app.use('/games', (req, res) => {
 //     res.render('showGames', { title: 'Класиране от минал сезон' });
