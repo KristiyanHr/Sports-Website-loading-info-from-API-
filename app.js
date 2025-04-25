@@ -2,20 +2,19 @@ const express = require('express');
 const session = require('express-session');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 const leagueRoutes = require('./routes/leagueRoutes');
 const authRoutes = require('./routes/authRoutes');
 const indexRouter = require('./routes/index');
-const MongoStore = require('connect-mongo');
 const favouriteRoutes = require('./routes/favouriteRoutes');  
 require('dotenv').config();
 
-const dbURI = 'mongodb://localhost:27017/Sport_Website';
+const dbURI = process.env.DB_URI || 'mongodb://localhost:27017/newApp'; 
 
 const app = express();
 
-//connect to DB
 mongoose.connect(dbURI) 
-    .then((result) => app.listen(3000))
+    .then((result) => app.listen(3000)) 
     .catch((err) => console.log(err));
 
 //register view engine

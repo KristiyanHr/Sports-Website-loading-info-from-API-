@@ -4,7 +4,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto')
 
 const registerForm = (req, res) => {
-    res.render('auth/register', { title: 'Register', errors: [], user: req.session.user }); 
+    res.render('auth/register', { title: 'Регистрация', errors: [], user: req.session.user }); 
 };
 
 const registerUser = async (req, res) => {
@@ -19,16 +19,16 @@ const registerUser = async (req, res) => {
         errors.push({ message: 'Паролата трябва да бъде поне 6 символа.' });
     }else if (errors.length > 0) {
         console.log("Rendering with initial errors");
-        return res.render('auth/register', { title: 'Register', errors, username, email, user: req.session.user });
+        return res.render('auth/register', { title: 'Регистрация', errors, username, email, user: req.session.user });
     }
 
     try {
         const existingUser = await User.findOne({ $or: [{ username }, { email }] });
 
         if (existingUser) {
-            errors.push({ message: 'User with this username or password already exists.' });
-            console.log("Rendering with existing user error");
-            return res.render('auth/register', { title: 'Register', errors, username, email, user: req.session.user });
+            errors.push({ message: 'Потребител с това потребителско име или парола вече съществува.' });
+            console.log("Грешка при зареждане с текущ потребител");
+            return res.render('auth/register', { title: 'Регистрация', errors, username, email, user: req.session.user });
         }
 
         const newUser = new User({
@@ -39,7 +39,7 @@ const registerUser = async (req, res) => {
 
         await newUser.save()
             .then(user => {
-                console.log("Redirecting after successful save");
+                console.log("Пренасочване след успешно запазване на потребител");
                 res.redirect('/login?registration_success=true');
                 return;
             })
@@ -48,25 +48,25 @@ const registerUser = async (req, res) => {
                     Object.values(err.errors).forEach(({ properties }) => {
                         errors.push({ message: properties.message });
                     });
-                    console.log("Rendering with Mongoose validation error");
-                    return res.render('auth/register', { title: 'Register', errors, username, email, user: req.session.user});
+                    console.log("Грешка при зареждане с Mongoose валидация");
+                    return res.render('auth/register', { title: 'Регистрация', errors, username, email, user: req.session.user});
                 }
-                console.error('Error when saving user:', err);
-                console.log("Sending 500 for save error");
-                res.status(500).send('Error when saving user.');
+                console.error('Грешка при запазване на потребител:', err);
+                console.log("Изпращане на статус (500) за грешка при запазване на потребител");
+                res.status(500).send('Грешка при запазване на потребител.');
                 return;
             });
 
     } catch (error) {
-        console.error('Error when saving user:', error);
-        console.log("Sending 500 for pre-save error");
-        res.status(500).send('Error when saving user.');
+        console.error('Грешка при запазване на потребител.:', error);
+        console.log("Изпращане на статус (500) за грешка преди запазване.");
+        res.status(500).send('Грешка при запазване на потребител..');
         return;
     }
 };
 
 const loginForm = (req, res) => {
-    res.render('auth/login', { title: 'Login', errors: [], user: req.session.user});
+    res.render('auth/login', { title: 'Влизане', errors: [], user: req.session.user});
 };
 
 const loginUser = async (req, res) => {
@@ -74,8 +74,8 @@ const loginUser = async (req, res) => {
     const errors = [];
 
     if (!username || !password) {
-        errors.push({ message: 'Please complete all fields.' });
-        return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
+        errors.push({ message: 'Моля попълнете всички полета.' });
+        return res.render('auth/login', { title: 'Влизане', errors, user: req.session.user });
     }
 
     try {
@@ -83,15 +83,15 @@ const loginUser = async (req, res) => {
         const user = await User.findOne({ $or: [{ username }, { email: username }] });
 
         if (!user) {
-            errors.push({ message: 'Invalid username or password.' });
-            return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
+            errors.push({ message: 'Невалидно потребителско име или парола.' });
+            return res.render('auth/login', { title: 'Влизане', errors, user: req.session.user });
         }
 
         bcrypt.compare(password, user.password, (err, isMatch) => {
             if (err) {
-                console.error('Error when comparing passwords:', err);
-                errors.push({ message: 'Error while logging in.' });
-                return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
+                console.error('Грешка при сравнение на паролите:', err);
+                errors.push({ message: 'Грешка при влизане.' });
+                return res.render('auth/login', { title: 'Влизане', errors, user: req.session.user });
             }
 
             if (isMatch) {
@@ -100,32 +100,32 @@ const loginUser = async (req, res) => {
                     username: user.username,
                     email: user.email
                 };
-                req.session.save(err => { // Изрично запазване на сесията
+                req.session.save(err => {
                     if (err) {
-                        console.error('Error saving session:', err);
-                        return res.redirect('/login'); // Обработете грешката според нуждите
+                        console.error('Грешка при запазване на сесията:', err);
+                        return res.redirect('/login');
                     }
                     res.redirect('/dashboard?login_success=true');
-                    console.log('Login successful, redirecting to dashboard.');
+                    console.log('Успешно влизане, пренасочване към потребителската страница.');
                 });
-                return; // Добавете return, за да предотвратите изпълнението на следващия код
+                return; 
             } else {
-                errors.push({ message: 'Invalid username or password.' });
-                return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
+                errors.push({ message: 'Невалидно потребителско име или парола.' });
+                return res.render('auth/login', { title: 'Влизане', errors, user: req.session.user });
             }
         });
 
     } catch (error) {
-        console.error('Error while logging in:', error);
-        errors.push({ message: 'Error while logging in.' });
-        return res.render('auth/login', { title: 'Login', errors, user: req.session.user });
+        console.error('Грешка при влизане:', error);
+        errors.push({ message: 'Грешка при влизане.' });
+        return res.render('auth/login', { title: 'Влизане', errors, user: req.session.user });
     }
 };
 
 const logout = (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            console.error('Error when loggin out:', err);
+            console.error('Грешка при излизане:', err);
             return res.redirect('/dashboard'); 
         }
         res.redirect('/login'); 
@@ -133,7 +133,7 @@ const logout = (req, res) => {
 };
 
 const forgotPasswordForm = (req, res) => {
-    res.render('auth/forgot-password', { title: 'Forgotten password', errors: [], user: req.user });
+    res.render('auth/forgot-password', { title: 'Забравена парола', errors: [], user: req.user });
 };
 
 const forgotPassword = async (req, res) => {
@@ -141,16 +141,16 @@ const forgotPassword = async (req, res) => {
     const errors = [];
 
     if (!email) {
-        errors.push({ message: 'Please enter valid email address.' });
-        return res.render('auth/forgot-password', { title: 'Forgotten password', errors , user: req.user });
+        errors.push({ message: 'Моля въведете валиден ймейл адрес.' });
+        return res.render('auth/forgot-password', { title: 'Забравена парола', errors , user: req.user });
     }
 
     try {
         const user = await User.findOne({ email });
 
         if (!user) {
-            errors.push({ message: 'User with this email is not existing.' });
-            return res.render('auth/forgot-password', { title: 'Forgotten password', errors, user: req.user });
+            errors.push({ message: 'Не съществува потребител с този имейл.' });
+            return res.render('auth/forgot-password', { title: 'Забравена Парола', errors, user: req.user });
         }
         const resetToken = crypto.randomBytes(32).toString('hex');
         user.resetPasswordToken = resetToken;
@@ -172,23 +172,25 @@ const forgotPassword = async (req, res) => {
         const mailOptions = {
             to: email,
             from: 'sportswebsitehelpmail@gmail.com',
-            subject: 'Request for reseting your password',
+            subject: 'Заявка за нулиране на парола',
             html: `
-                <p>Hello,</p>
-                <p>We have received a request to reset the password for your SportWebsite account.</p>
-                <p>Please click on the following link to reset your password:</p>
-                <p><a href="${resetUrl}">Click this link to go to reset page</a></p>
-                <p>The link will be active for 1 hour.</p>
-                <p>If you did not make this request, you can ignore this email or contact us at <a href="mailto:sportswebsitehelpmail@gmail.com">sportswebsitehelpmail@gmail.com</a>.</p>
-                <p>Best regards,<br>The SportWebsite Team</p>
+                <p>Здравейте,</p>
+                <p>Получихме заявка за нулиране на паролата на вашият акаунт в SportWebsite.</p>
+                <p>Моля кликнете на следващия линк за да нулирате вашата парола:</p>
+                <p><a href="${resetUrl}">Това е линка за нулиране на парола</a></p>
+                <p>Този линк ще бъде активен за 1 час с цел по-голяма сигурност.</p>
+                <p>Ако не сте направили тази заявка, може да игнорирате този имейл, вашият акаунт не е зстрашен</p>
+                <p>Ако имате въпроси, моля не се колебайте да се свържете с нас: <a href="mailto:sportswebsitehelpmail@gmail.com">sportswebsitehelpmail@gmail.com</a></p>
+                <p>Благодарим ви, че използвате SportWebsite!</p>
+                <p>Поздрави,<br>екипът на SportWebsite</p>
             `
         };
 
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
-                console.error('Error when sending the email:', error);
-                errors.push({ message: 'There was an error when sending the email. Please try again later.' });
-                return res.render('auth/forgot-password', { title: 'Forgotten password', errors , user: req.user });
+                console.error('Грешка при изпращане на имейла!', error);
+                errors.push({ message: 'Грешка при изпращане на имейла! Моля опитайте пак по-късно.' });
+                return res.render('auth/forgot-password', { title: 'Забравена Парола', errors , user: req.user });
             } else {
                 console.log('Email sent:', info.response);
                 res.redirect('/login?reset_request_sent=true');
@@ -196,9 +198,9 @@ const forgotPassword = async (req, res) => {
         });
 
     } catch (error) {
-        console.error('Error while reseting the password:', error);
-        errors.push({ message: 'Error. Please try again later.' });
-        return res.render('auth/forgot-password', { title: 'Forgotten password', errors , user: req.user });
+        console.error('Грешка при нулирането на паролата:', error);
+        errors.push({ message: 'Грешка, моля опитайте по-късно.' });
+        return res.render('auth/forgot-password', { title: 'Забравена Парола', errors , user: req.user });
     }
 };
 
@@ -211,14 +213,14 @@ const resetPasswordForm = async (req, res) => {
         });
 
         if (!user) {
-            req.flash('error', 'The token has expired or it is invalid.');
+            req.flash('error', 'Токенът е изтекъл или не е валиден.');
             return res.redirect('/login');
         }
 
-        res.render('auth/reset-password', { title: 'Password reset', token , errors: []});
+        res.render('auth/reset-password', { title: 'Нулиране на Парола', token , errors: []});
     } catch (error) {
-        console.error('Error in resetPasswordForm:', error);
-        req.flash('error', 'There was and error. Please try again.');
+        console.error('Грешка в resetPasswordForm:', error);
+        req.flash('error', 'Възникна грешка. Моля опитайте отново.');
         return res.redirect('/login');
     }
 };
@@ -228,13 +230,13 @@ const updatePassword = async (req, res) => {
     const errors = [];
 
     if (!password || !passwordConfirm) {
-        errors.push({ message: 'Please enter both passwords.' });
-        return res.render('auth/reset-password', { title: 'Reset Password', token, errors });
+        errors.push({ message: 'Моля въведете и двете пароли.' });
+        return res.render('auth/reset-password', { title: 'Нулиране на Парола', token, errors });
     }
 
     if (password !== passwordConfirm) {
-        errors.push({ message: 'Passwords do not match.' });
-        return res.render('auth/reset-password', { title: 'Reset Password', token, errors });
+        errors.push({ message: 'Паролите не съвпадат.' });
+        return res.render('auth/reset-password', { title: 'Нулиране на Парола', token, errors });
     }
 
     try {
@@ -244,8 +246,8 @@ const updatePassword = async (req, res) => {
         });
 
         if (!user) {
-            return res.render('auth/login', { title: 'Login', errors: [{ 
-                message: 'Password reset token is invalid or has expired.' }] });
+            return res.render('auth/login', { title: 'Влизане', errors: [{ 
+                message: 'Токенът за нулиране на паролата е невалиден или е изтекъл.' }] });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -254,13 +256,13 @@ const updatePassword = async (req, res) => {
         user.resetPasswordExpires = undefined;
         await user.save();
 
-        return res.render('auth/login', { title: 'Login',
-             success: 'Your password has been reset successfully. You can log in with your new password.', errors: [] });
+        return res.render('auth/login', { title: 'Влизане',
+             success: 'Паролата ви беше нулирана успешно. Може да влезете с новата си парола.', errors: [] });
 
     } catch (error) {
-        console.error('Error while resetting password:', error);
-        errors.push({ message: 'An error occurred while resetting the password. Please try again.' });
-        return res.render('auth/forgot-password', { title: 'Forgot Password', errors }); 
+        console.error('Грешка при нулиране на парлата:', error);
+        errors.push({ message: 'Възникна грешка при нулиране на паролата. Моля опитайте отново.' });
+        return res.render('auth/forgot-password', { title: 'Забравена парола', errors }); 
     }
 };
 
@@ -272,8 +274,8 @@ const profilePage = async (req, res) => {
         }
         res.render('auth/profile', { title: 'My Profile', user: req.session.user, profileData: user });
     } catch (error) {
-        console.error('Error while loading profil info:', error);
-        res.status(500).send('Error while loading profil info.');
+        console.error('Грешка при зареждане на информация за профила:', error);
+        res.status(500).send('Грешка при зареждане на информация за профила.');
     }
 };
 module.exports = {

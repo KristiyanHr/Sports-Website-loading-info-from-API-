@@ -6,12 +6,15 @@ const leagueSchema = new Schema({
         type: String,
         required: true
     },
-    apiId: { // The ID from the external sports API
+    apiId: {
         type: Number,
         required: true,
         unique: true
     },
-    // You might want to add other relevant fields like country, logo URL, etc.
+    logoUrl: {
+        type: String,
+        required: false 
+    },
 }, { timestamps: true });
 
 const League = mongoose.model('League', leagueSchema);

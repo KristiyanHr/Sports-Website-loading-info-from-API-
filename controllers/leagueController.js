@@ -1,43 +1,43 @@
 const League = require('../models/League');
-const { getFootballLeagues } = require('../apiCalls');
+// const { getFootballLeagues } = require('../apiCalls');
 const Match = require('../models/Match');
 const axios = require('axios');
 
-const fetchAndStoreLeagues = async (req, res) => {
-    try {
-        const leaguesFromApi = await getFootballLeagues();
+// const fetchAndStoreLeagues = async (req, res) => {
+//     try {
+//         const leaguesFromApi = await getFootballLeagues();
 
-        if (leaguesFromApi && leaguesFromApi.length > 0) {
-            for (const leagueData of leaguesFromApi) {
-                const existingLeague = await League.findOne({ apiId: leagueData.league.id });
+//         if (leaguesFromApi && leaguesFromApi.length > 0) {
+//             for (const leagueData of leaguesFromApi) {
+//                 const existingLeague = await League.findOne({ apiId: leagueData.league.id });
 
-                if (!existingLeague) {
-                    const newLeague = new League({
-                        name: leagueData.league.name,
-                        apiId: leagueData.league.id,
-                    });
-                    await newLeague.save();
-                }
-            }
-            res.send('Successfully fetched and stored new leagues!'); 
-        } else {
-            res.send('No new leagues fetched from the API.');
-        }
-    } catch (error) {
-        console.error("Error fetching and storing leagues:", error);
-        res.status(500).send('Error fetching leagues.');
-    }
-};
+//                 if (!existingLeague) {
+//                     const newLeague = new League({
+//                         name: leagueData.league.name,
+//                         apiId: leagueData.league.id,
+//                     });
+//                     await newLeague.save();
+//                 }
+//             }
+//             res.send('Successfully fetched and stored new leagues!'); 
+//         } else {
+//             res.send('No new leagues fetched from the API.');
+//         }
+//     } catch (error) {
+//         console.error("Error fetching and storing leagues:", error);
+//         res.status(500).send('Error fetching leagues.');
+//     }
+// };
 
 const homepageLeagues = [
-    { name: 'Premier League', identifier: 'premier-league', apiId: 39 },
-    { name: 'Bundesliga', identifier: 'bundesliga', apiId: 78 },     
-    { name: 'La Liga', identifier: 'la-liga', apiId: 140 },      
-    { name: 'Serie A', identifier: 'serie-a', apiId: 135 },
-    { name: 'Champions League', identifier: 'champions-league', apiId: 2 },
-    { name: 'Europa League', identifier: 'europa-league', apiId: 3 },
-    { name: 'World Cup', identifier: 'world-cup', apiId: 1 },
-    { name: 'Bulgarian First League', identifier: 'bulgarian-first-league', apiId: 172 }
+    { name: 'Premier League', identifier: 'premier-league', apiId: 39 ,  logoUrl: 'https://media.api-sports.io/football/leagues/39.png'},
+    { name: 'Bundesliga', identifier: 'bundesliga', apiId: 78, logoUrl: 'https://media.api-sports.io/football/leagues/78.png'},     
+    { name: 'La Liga', identifier: 'la-liga', apiId: 140, logoUrl: 'https://media.api-sports.io/football/leagues/140.png'},      
+    { name: 'Serie A', identifier: 'serie-a', apiId: 135 , logoUrl: 'https://media.api-sports.io/football/leagues/135.png'},
+    { name: 'Champions League', identifier: 'champions-league', apiId: 2 , logoUrl: 'https://media.api-sports.io/football/leagues/2.png'},
+    { name: 'Europa League', identifier: 'europa-league', apiId: 3, logoUrl: 'https://media.api-sports.io/football/leagues/3.png'},
+    { name: 'World Cup', identifier: 'world-cup', apiId: 1 ,logoUrl: 'https://media.api-sports.io/football/leagues/1.png'},
+    { name: 'Bulgarian First League', identifier: 'bulgarian-first-league', apiId: 172, logoUrl: 'https://media.api-sports.io/football/leagues/172.png'}
 ];
 
 const league_index = (req, res) => {
@@ -46,7 +46,6 @@ const league_index = (req, res) => {
 
 const league_details = async (req, res) => {
     const leagueIdentifier = req.params.id;
-    console.log("League Identifier:", leagueIdentifier);
 
     let viewName;
 
@@ -107,14 +106,12 @@ const league_details = async (req, res) => {
                     'x-rapidapi-host': 'api-football-v1.p.rapidapi.com'
                 }
             };
-
             const fixturesResponse = await axios.request(options);
             const matchesFromApi = fixturesResponse.data.response;
 
+            
             if (matchesFromApi && matchesFromApi.length > 0) {
-                // Store the fetched matches in the database
                 const savedMatches = [];
-                // console.log(`Получени ${matchesFromApi.length} мача от API-то.`); - DEBUGGING
                 for (const match of matchesFromApi) {
                     const newMatch = new Match({
                         fixtureId: match.fixture.id,
@@ -128,7 +125,6 @@ const league_details = async (req, res) => {
                         console.log( new Date(selectedDate).getMonth() > 6 ? new Date(selectedDate).getFullYear() : new Date(selectedDate).getFullYear() - 1);
                         // console.log(`Мач с ID ${match.fixture.id} беше успешно запазен.`); - DEBUGGING
                     } catch (error) {
-                        // Handle potential duplicate key error (fixtureId already exists)
                         if (error.code !== 11000) {
                             console.error("Error saving match to database:", error);
                         }
@@ -162,7 +158,6 @@ const league_details = async (req, res) => {
 };
 
 module.exports = {
-    fetchAndStoreLeagues,
     league_index,
     league_details
 };

@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const matchSchema = new Schema({
     fixtureId: {
-        type: Number, // Or String, depending on the API response
+        type: Number, 
         required: true,
         unique: true
     },
