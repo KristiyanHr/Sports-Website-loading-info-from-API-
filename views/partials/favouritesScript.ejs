@@ -21,4 +21,60 @@
             console.error('Грешка при добавяне към любими:', error);
         });
     }
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+  const favoriteLeaguesList = document.getElementById('favorite-leagues-list');
+
+  favoriteLeaguesList.addEventListener('click', async (event) => {
+    if (event.target.classList.contains('remove-from-favorites-btn')) {
+      const leagueId = event.target.dataset.leagueId;
+      const listItemToRemove = event.target.closest('.favorite-league-item');
+
+      if (leagueId && listItemToRemove) {
+        try {
+          const success = await removeFromFavourites(leagueId);
+
+          if (success) {
+            listItemToRemove.remove();
+            console.log(`League with ID ${leagueId} removed from favorites.`);
+          } else {
+            console.error(`Failed to remove league with ID ${leagueId} from favorites.`);
+          }
+        } catch (error) {
+          console.error('An error occurred:', error);
+          alert('An unexpected error occurred. Please try again.');
+        }
+      }
+    }
+  });
+
+  async function removeFromFavourites(leagueId) {
+    try {
+      const response = await fetch('/remove-favourite', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('authToken')}`
+        },
+        body: JSON.stringify({ leagueId: leagueId })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log(data.message);
+        return true;
+      } else {
+        const errorData = await response.json();
+        console.error('API Error:', errorData);
+        alert(errorData.message || 'Failed to remove league from favorites.');
+        return false;
+      }
+    } catch (error) {
+      console.error('Fetch Error:', error);
+      alert('An unexpected error occurred.');
+      return false;
+    }
+  }
+});
 </script>

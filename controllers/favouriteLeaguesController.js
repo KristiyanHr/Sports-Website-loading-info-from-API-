@@ -1,13 +1,14 @@
 const User = require('../models/user');
+
 const homepageLeagues = [
-    { identifier: 'premier-league', name: 'Висша лига', apiId: 39 },
-    { identifier: 'bundesliga', name: 'Бундеслига', apiId: 78 },
-    { identifier: 'la-liga', name: 'Ла Лига', apiId: 140 },
-    { identifier: 'serie-a', name: 'Серия А', apiId: 135 },
-    { identifier: 'champions-league', name: 'Шампионска лига', apiId: 2 },
-    { identifier: 'europa-league', name: 'Лига Европа', apiId: 3 },
-    { identifier: 'world-cup', name: 'Световно първенство', apiId: 1 },
-    { identifier: 'bulgarian-first-league', name: 'Първа лига', apiId: 208 }
+  { name: 'Premier League', identifier: 'premier-league', apiId: 39 ,  logoUrl: 'https://media.api-sports.io/football/leagues/39.png'},
+  { name: 'Bundesliga', identifier: 'bundesliga', apiId: 78, logoUrl: 'https://media.api-sports.io/football/leagues/78.png'},     
+  { name: 'La Liga', identifier: 'la-liga', apiId: 140, logoUrl: 'https://media.api-sports.io/football/leagues/140.png'},      
+  { name: 'Serie A', identifier: 'serie-a', apiId: 135 , logoUrl: 'https://media.api-sports.io/football/leagues/135.png'},
+  { name: 'Champions League', identifier: 'champions-league', apiId: 2 , logoUrl: 'https://media.api-sports.io/football/leagues/2.png'},
+  { name: 'Europa League', identifier: 'europa-league', apiId: 3, logoUrl: 'https://media.api-sports.io/football/leagues/3.png'},
+  { name: 'World Cup', identifier: 'world-cup', apiId: 1 ,logoUrl: 'https://media.api-sports.io/football/leagues/1.png'},
+  { name: 'Bulgarian First League', identifier: 'bulgarian-first-league', apiId: 172, logoUrl: 'https://media.api-sports.io/football/leagues/172.png'}
 ];
 
 const show_favourites = async (req, res) => {
@@ -22,8 +23,8 @@ const show_favourites = async (req, res) => {
         );
   
         res.render('favourites', {
-            title: 'Favourite Legues',
-            favouriteLeagues: favouriteLeaguesData,
+            title: 'Любими Лиги',
+            leaguesData: favouriteLeaguesData,
             user: req.user
         });
       } else {
@@ -32,19 +33,16 @@ const show_favourites = async (req, res) => {
     } catch (err) {
       console.error(err);
       res.render('favourites', { 
-        title: 'Favourite Leagues', 
-        favouriteLeagues: [], 
-        error: 'Error while loading favourite leagues.',
+        title: 'Любими Лиги', 
+        leaguesData: [], 
+        error: 'Грешка при зареждане на любими лиги.',
         user: req.user
     });
     }
-  };
+};
 
 const add_favourite = async (req, res) => {
-    console.log('add_favourite function called');
-    console.log('req.body:', req.body);
-    console.log('req.user:', req.user);
-    
+  
     const leagueIdentifier = req.body.leagueId;
     const userId = req.user._id;
     console.log('leagueIdentifier received:', leagueIdentifier);
@@ -53,22 +51,19 @@ const add_favourite = async (req, res) => {
       const user = await User.findById(userId);
       if (user) {
         if (!user.favouriteLeagues.includes(leagueIdentifier)) {
-          console.log('favouriteLeagues before push:', user.favouriteLeagues);
           user.favouriteLeagues.push(leagueIdentifier);
-          console.log('favouriteLeagues after push:', user.favouriteLeagues);
-          console.log('Attempting to save user:', user); 
           await user.save();
-          console.log('User saved successfully.'); 
-          res.status(200).json({ message: 'League added to favourites!' });
+          console.log('Потребителят беше запазен успешно.'); 
+          res.status(200).json({ message: 'Лигата е добавена към любими!' });
         } else {
-          res.status(200).json({ message: 'League has already been added to favourites.' });
+          res.status(200).json({ message: 'Лигата вече е добавена към любими.' });
         }
       } else {
-        res.status(404).json({ message: 'User was not found.' });
+        res.status(404).json({ message: 'Потребителят не беше намерен.' });
       }
     } catch (err) {
       console.error(err);
-      res.status(500).json({ message: 'Error while adding the league to favourites.' });
+      res.status(500).json({ message: 'Грешка при добавяне на лигата към любими.' });
     }
 };
   
@@ -81,13 +76,13 @@ const remove_favourite = async (req, res) => {
           if (user) {
               user.favouriteLeagues = user.favouriteLeagues.filter(id => id !== leagueIdentifier);
               await user.save();
-              res.status(200).json({ message: 'League removed from favourites.' });
+              res.status(200).json({ message: 'Лигата беше премахната от списъка с любими.' });
           } else {
-              res.status(404).json({ message: 'User was not found.' });
+              res.status(404).json({ message: 'Потребителят не беше намерен.' });
           }
       } catch (err) {
           console.error(err);
-          res.status(500).json({ message: 'Error while adding the league to favourites.' });
+          res.status(500).json({ message: 'Грешка при премахването на лигата от любими.' });
       }
 };
   

@@ -1,14 +1,61 @@
 <%- include('../partials/head') %>
-<body>
+
 
     <%- include('../partials/navbar') %>
 
     <div class="container mt-5">
-        <h1>My Profile</h1>
-        <p>Username: <%= profileData.username %></p>
-        <p>Email address: <%= profileData.email %></p>
-        <p>Account creation date: <%= profileData.createdAt %></p>
-        </div>
+        <div class="row justify-content-center">
+            <div class="col-md-10 col-lg-8"> <div class="card bg-dark text-light p-3 p-md-4 rounded-3"> <div class="card-body">
+                        <h2 class="card-title mb-4">Моят Профил</h2>
+                        <div class="row">
+                            <div class="col-md-4 text-center mb-4 mb-md-0">
+                                <img src="/css/images/avatar.png" 
+                                     alt="Profile Picture"
+                                     class="img-thumbnail rounded-circle mb-3"
+                                     width="150" height="150"
+                                     style="background-color: #555;"> 
+    
+                                <h4 class="mb-3"><%= user.username %></h4> 
+    
+                                <button class="btn btn-outline-light btn-sm" disabled >Редактирай профил</button>
+                                <p class="text-muted small mt-1">(Функция в разработка)</p>
+                            </div>
+    
+                            <div class="col-md-8">
+                                <h5>Информация за акаунта</h5>
+                                <hr class="border-secondary">
+    
+                                <dl class="row"> 
+                                    <dt class="col-sm-6">Потребителско име:</dt>
+                                    <dd class="col-sm-6"><%= profileData.username %></dd>
 
-</body>
-</html>
+                                    <dt class="col-sm-4">Имейл адрес:</dt>
+                                    <dd class="col-sm-8"><%= profileData.email %></dd>
+    
+                                    <dt class="col-sm-4">Дата на създаване:</dt>
+                                    <dd class="col-sm-8">
+                                        <%= new Date(profileData.createdAt).toLocaleDateString('bg-BG', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }) %>
+                                    </dd>
+    
+                                    </dl>
+    
+                                <h5 class="mt-4">Любими Лиги</h5>
+                                 <hr class="border-secondary">
+                                 <% if (profileData.favouriteLeagues && profileData.favouriteLeagues.length > 0) { %>
+                                     <ul class="list-unstyled"> <%# Списък без точки %>
+                                         <% profileData.favouriteLeagues.forEach(leagueId => { %>
+                                             <li><i class="bi bi-star-fill text-warning me-2"></i><%= leagueId %> <%# Трябва да вземеш името на лигата %></li>
+                                         <% }); %>
+                                     </ul>
+                                 <% } else { %>
+                                     <p class="text-muted"><i>Все още нямате добавени любими лиги.</i></p>
+                                 <% } %>
+    
+                            </div> 
+                        </div> 
+                    </div> 
+                </div> 
+            </div> 
+        </div> 
+    </div>
+    <%- include('../partials/footer') %>

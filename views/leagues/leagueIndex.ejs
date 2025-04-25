@@ -1,25 +1,45 @@
 <%- include('../partials/head') %>
     <%- include('../partials/navbar') %>
 
-    <div class="container">
-        <div class="league-list-container">
-            <h1>Popular Leagues</h1>
-            <ul class="league-list">
-                <% if (leagues.length > 0) { %>
-                    <% leagues.forEach(league => { %>
-                        <li>
-                            <a href="/leagues/<%= league.identifier %>"><%= league.name %></a>
-                        </li>
-                    <% }); %>
-                <% } else { %>
-                    <p>No available leagues.</p>
-                <% } %>
-            </ul>
-            </div>
-        <div class="main-content">
-            <h2>Todays fixtures</h2>
-            <p>Chose a league from the list to see its matches.</p>
-        </div>
-    </div>
+    <div class="container"> <%# Използваме твоя съществуващ .container тук %>
 
+        <div class="league-list-container">
+            <%# Промених H1 на H4 и добавих икона/цвят %>
+            <h4 class="mb-3 text-primary">
+                <%# <i class="bi bi-list-stars me-1"></i> Можеш да махнеш иконата, ако не ползваш Bootstrap Icons %>
+                Популярни Лиги
+            </h4>
+            <%# Проверяваме променливата 'leagues', която подаваш от контролера %>
+            <% if (leagues && leagues.length > 0) { %>
+                <div class="list-group list-group-flush">
+                    <% leagues.forEach(league => { %>
+                        <a href="/leagues/<%= league.identifier || league.apiId %>" 
+                           class="list-group-item list-group-item-action bg-transparent border-secondary text-light px-3 py-2 d-flex align-items-center league-nav-item"> <%# Важни класове за стил и поведение %>
+    
+                            <%# Показваме логото, АКО е налично в обекта league %>
+                            <% if (league.logoUrl) { %>
+                                <img src="<%= league.logoUrl %>" alt="" class="me-2" style="margin-right:2%; width: 24px; height: auto; object-fit: contain;">
+                            <% } else { %>
+                                <%# Ако няма лого, може да сложим празно място или стандартна икона %>
+                                <span class="me-2" style="width: 24px; display: inline-block;"><i class="bi bi-shield-fill text-muted"></i></span> <%# Примерна икона %>
+                            <% } %>
+    
+                            
+                            <span class="flex-grow-1"><%= league.name %></span>
+    
+                            
+                            <i class="bi bi-chevron-right small ms-auto"></i> 
+                        </a>
+                    <% }); %>
+                </div>
+            <% } else { %>
+                <p>В момента няма първенства.</p> <%# Твоето съобщение %>
+            <% } %>
+        </div>
+        <div class="main-content">
+            <h2>Днешните срещи</h2>
+            <p>Избери лига от списъка за да видиш мачовете.</p>
+        </div>
+    
+    </div>
     <%- include('../partials/footer') %>

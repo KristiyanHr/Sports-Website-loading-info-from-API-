@@ -1,35 +1,53 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">SportWebsite</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-<div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-        </li>
-    </ul>
-    <ul class="navbar-nav">
-        <% if (!user) { %>
-            <li class="nav-item">
-                <a class="nav-link" href="/leagues">Leagues</a>
-            <li class="nav-item">
-            <li class="nav-item">
-                <a class="nav-link" href="/login">Log in</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/register">Register</a>
-          <% } else { %>
-            <li class="nav-item">
-                <a class="nav-link" href="/favourites">Favourite Leagues</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/profile">My profile</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/logout">Log out</a>
-            </li>
-          <% } %>
-      </ul>
-  </div>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+            <img src="/css/images/goldenlogo.png" alt="SportWebsite Logo" height="40" width="auto" class="d-inline-block align-text-top me-2">
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+
+                <% if (!user) { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/leagues">Leagues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Log in</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/register">Register</a>
+                    </li>
+                <% } else { %>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/favourites">Favourite Leagues</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/leagues">Leagues</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <%= user.username %>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark" aria-labelledby="navbarUserDropdown">
+                            <li><a class="dropdown-item" href="/profile">Моят Профил</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout">Излизане</a></li>
+                        </ul>
+                    </li>
+                <% } %>
+            </ul>
+        </div>
+    </div>
 </nav>
+
+
+<%# НЕ ЗАБРАВЯЙ: Този скрипт трябва да е включен САМО ВЕДНЪЖ и то ПРЕДИ затварящия </body> таг! %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

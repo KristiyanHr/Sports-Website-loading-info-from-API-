@@ -1,25 +1,61 @@
 <%- include('./partials/head') %>
     <%- include('./partials/navbar') %>
 
-    <div class="container mt-5">
-        <h1><%= title %></h1>
+ 
+<div class="container mt-5">
+    <h2 class="mb-3">Любими Лиги</h2>
+    <% if(user) { %><p>Здравей, <%= user.username %>!</p><% } %> <%# Показва поздрава %>
+    <p class="mb-4">Твоите любими лиги:</p>
 
-        <% if (user) { %>
-            <p>Hello, <%= user.username %>!</p>
+    <%# Проверяваме дали има данни за любими лиги %>
+    <% if (leaguesData && leaguesData.length > 0) { %>
+        <%# Грид система за подреждане на картите %>
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-"> <%# 1/2/3 колони, g-4 = gutter %>
+            <%# Обхождаме масива с ОБЕКТИ на лиги %>
+            <% leaguesData.forEach(league => { %>
+                <div class="col mb-4">
+                    <%# Карта за всяка лига - h-100 я прави с еднаква височина в реда %>
+                    <div class="card h-100 bg-secondary text-light"> <%# Може да пробваш bg-dark или друг тъмен нюанс %>
+                        <li>
+                            <% if (league.logoUrl) { %> <%# Проверка дали има лого URL %>
+                                <img src="<%= league.logoUrl %>"
+                                     alt="<%= league.name %> Logo"
+                                     style="width: 25px; height: auto; vertical-align: middle; margin-right: 8px;">
+                            <% } %>
+                            <%# Линкът трябва да използва league.identifier или league.apiId %>
+                            <a href="/leagues/<%= league.identifier || league.apiId %>" class="text-light ...">
+                                <%= league.name %>
+                            </a>
+                            <%# ... бутон за премахване и т.н. ... %>
+                        </li>
+                        <div class="card-body d-flex flex-column"> <%# Flex column за позициониране на съдържанието %>
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <%# Име на лигата %>
+                                <h5 class="card-title"><%= league.name %></h5>
 
-            <h2>Your favourite leagues:</h2>
-            <% if (favouriteLeagues && favouriteLeagues.length > 0) { %>
-                <ul>
-                    <% favouriteLeagues.forEach(league => { %>
-                        <li><%= league.name %></li>
-                    <% }); %>
-                </ul>
-            <% } else { %>
-                <p>You still havent anded any favourites.</p>
-            <% } %>
+                                <%# Бутон за премахване (изисква форма и backend логика) %>
+                                <form action="/favourites/remove" method="POST" class="ms-2"> <%# ms-2 = margin start %>
+                                    <input type="hidden" name="leagueIdentifier" value="<%= league.identifier || league.apiId %>"> <%# Подаване на ID/идентификатор %>
+                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Премахни">
+                                        <%# Можеш да използваш икона от Bootstrap Icons %>
+                                        <i class="bi bi-trash"></i> X <%# Замести с икона, ако искаш %>
+                                    </button>
+                                </form>
+                            </div>
 
-        <% } else { %>
-            <p>Please log in to see favourite leagues.</p>
-        <% } %>
-    </div>
+                             <%# TODO: Тук по-късно може да се добавят линкове към таблици, класиране и т.н. %>
+                            <%# --- Място за бъдещи мачове --- %>
+                            <div class="mt-auto pt-3 border-top border-light border-opacity-25"> <%# mt-auto бута към дъното, pt-3 = padding-top, border-top добавя линия %>
+                                <small class="text-light-emphasis">Предстоящи мачове ще се показват тук.</small>
+                                <%# Тук може да има бутон "Виж програма" или директно да се зареждат мачове %>
+                            </div>
+                            <%# --- Край на мястото за мачове --- %>
+                        </div> 
+                    </div> 
+                </div> <% }); %>
+        </div> <% } else { %>
+        <%# Съобщение, ако няма добавени любими лиги %>
+        <p class="text-muted"><i>Все още нямате добавени любими лиги.</i></p>
+    <% } %>
+</div> 
 <%- include('./partials/footer') %>

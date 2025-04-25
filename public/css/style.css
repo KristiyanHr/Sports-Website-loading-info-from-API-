@@ -69,15 +69,6 @@ body {
     padding: 0;
 }
 
-.container {
-    max-width: 960px; /* Максимална ширина на съдържанието */
-    margin: 20px auto; /* Центриране и отстъп отгоре и отдолу */
-    padding: 20px;
-    background-color: #222222; /* По-тъмен фон за контейнера */
-    border-radius: 8px; /* Заоблени ъгли */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Лека сянка */
-    display: flex; /* За да подредим елементите в контейнера */
-}
 
 .league-list-container {
     flex: 0 0 250px; /* Фиксирана ширина за списъка с лиги */
@@ -122,37 +113,7 @@ body {
     color: #e0e0e0;
     margin-top: 0;
 }
-.style-me{
-    width: 70%;
-}
 
-nav {
-    background-color: #333333;
-    padding: 10px 0;
-    margin-bottom: 20px;
-}
-
-nav ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-}
-
-nav ul li {
-    margin: 0 15px;
-}
-
-nav ul li a {
-    color: #f0f0f0;
-    text-decoration: none;
-    transition: color 0.3s ease;
-}
-
-nav ul li a:hover {
-    color: #2d055e;
-}
 
 /* Стилове за футъра (ако имате) */
 footer {
@@ -169,4 +130,36 @@ footer {
     font-size: 14px;
     flex-direction:column;
     margin-top: 30px;
+}
+.btn-outline-light:hover {
+    background-color: #42124e;
+    color: #ffffff; 
+    transform: scale(1.05);
+}
+.league-nav-item:hover,
+.league-nav-item:focus {
+  background-color: rgba(255, 255, 255, 0.1) !important; /* Леко по-светъл фон при hover/focus */
+  color: #fff !important; /* Бял текст */
+  border-left: 3px solid #bb86fc !important; /* Акцентна лява рамка при hover */
+  /* Компенсираме рамката, за да не се измества текстът - коригирай 1rem според твоя padding */
+  padding-left: calc(1rem - 3px) !important;
+}
+
+/* Стил за активен елемент (ако добавиш клас active с JS/сървър) */
+.league-nav-item.active {
+  background-color: rgba(187, 134, 252, 0.2) !important; /* По-наситен акцентен фон */
+  border-left: 3px solid #bb86fc !important; /* Лява акцентна рамка */
+  font-weight: bold; /* По-удебелен шрифт за активен */
+  padding-left: calc(1rem - 3px) !important; /* Компенсация на рамката */
+  color: #fff !important; /* Гарантираме бял текст */
+}
+
+/* Скриваме/намаляваме видимостта на стрелката при hover/active */
+.league-nav-item i.bi-chevron-right {
+    opacity: 0.5;
+    transition: opacity 0.2s ease-in-out; /* Плавна промяна */
+}
+.league-nav-item:hover i.bi-chevron-right,
+.league-nav-item.active i.bi-chevron-right {
+    opacity: 0;
 }
