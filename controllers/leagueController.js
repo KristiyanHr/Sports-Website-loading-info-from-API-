@@ -96,10 +96,9 @@ const league_details = async (req, res) => {
                     try {
                         const savedMatch = await newMatch.save();
                         savedMatches.push(savedMatch);
-                        // console.log(`Мач с ID ${match.fixture.id} беше успешно запазен.`); - DEBUGGING
                     } catch (error) {
                         if (error.code !== 11000) {
-                            console.error("Error saving match to database:", error);
+                            console.error("Грешка при запазване в БД:", error);
                         }
                     }
                 }

@@ -18,7 +18,7 @@ const registerUser = async (req, res) => {
     }else if (password.length < 6) {
         errors.push({ message: 'Паролата трябва да бъде поне 6 символа.' });
     }else if (errors.length > 0) {
-        console.log("Rendering with initial errors");
+        console.log("Рендиране с грешки");
         return res.render('auth/register', { title: 'Регистрация', errors, username, email, user: req.session.user });
     }
 
