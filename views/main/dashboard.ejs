@@ -2,16 +2,16 @@
 <%- include('../partials/navbar') %>
 
 <div class="container mt-5">
-    <h1>Welcome to the dashboard, <%= user.username %>!</h1>
-    <p>Your email address: <%= user.email %></p>
+    <h1>Добре дошли в дашборда, <%= user.username %>!</h1>
+    <p>Вашият имейл адрес: <%= user.email %></p>
 
     <% if (query.login_success) { %>
         <div class="alert alert-success mt-3">
-            Successfull log in!
+            Успешно Влизане!
         </div>
     <% } %>
 
-    <p><a href="/logout" class="btn btn-danger">Logout</a></p>
+    <p><a href="/logout" class="btn btn-danger">Излизане</a></p>
 </div>
 
 <%- include('../partials/footer') %>

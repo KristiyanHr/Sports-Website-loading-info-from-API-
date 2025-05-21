@@ -1,6 +1,5 @@
 <script>
     function addLeagueToFavourites(leagueIdentifier) {
-        console.log('Adding league to favourites:', JSON.stringify({ leagueId: leagueIdentifier }) );
         fetch('/favourites/add-favourite', { 
             method: 'POST',
             headers: {

@@ -12,25 +12,25 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" href="/">Начало</a>
                 </li>
 
                 <% if (!user) { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/leagues">Leagues</a>
+                        <a class="nav-link" href="/leagues">Лиги</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/login">Log in</a>
+                        <a class="nav-link" href="/login">Влизане</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/register">Register</a>
+                        <a class="nav-link" href="/register">Регистрация</a>
                     </li>
                 <% } else { %>
                     <li class="nav-item">
-                        <a class="nav-link" href="/favourites">Favourite Leagues</a>
+                        <a class="nav-link" href="/favourites">Любими лиги</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/leagues">Leagues</a>
+                        <a class="nav-link" href="/leagues">Лиги</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarUserDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
