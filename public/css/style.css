@@ -35,13 +35,13 @@
 .date-time {
     font-weight: bold;
 }
-.date-picker-container{
-    padding-top: 2%;
-}
-footer{
+.date-picker-container form {
     display: flex;
-    justify-content: center;
+    align-items: flex-end;
+    gap: 10px; /* разстояние между елементите */
 }
+
+
 .table {
     width: 100%;
     border-collapse: collapse;
@@ -162,4 +162,28 @@ footer {
 .league-nav-item:hover i.bi-chevron-right,
 .league-nav-item.active i.bi-chevron-right {
     opacity: 0;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.page-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* цялата височина на екрана */
+}
+
+.main-content {
+    flex: 1; /* заема цялото свободно пространство */
+}
+
+footer {
+    background-color: #333333;
+    color: #e0e0e0;
+    padding: 10px 0;
+    min-height: 50px;
+    display: flex;
+    justify-content: center;
 }

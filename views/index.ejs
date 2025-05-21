@@ -1,52 +1,120 @@
 <%- include('./partials/indexHead') %>
 <body>
-    <%- include('./partials/navbar') %>
+  <%- include('./partials/navbar') %>
 
-    <div class="container mt-5">
-        <h1>Текущи мачове на живо</h1>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Home</th>
-                    <th>Result</th>
-                    <th>Away</th>
-                    <th>Status</th>
-                    <th>Minute</th>
-                    <th>Odds</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (liveMatches && liveMatches.length > 0) { %>
-                    <% liveMatches.forEach(match => { %>
-                        <% const matchUrl = `/match-details/${match.fixture.id}`; %>
-                        <tr onclick="window.location.href='<%= matchUrl %>';" style="cursor: pointer;">
-                            <td><%= match.teams.home.name %></td>
-                            <td>
-                                <% if (match.goals) { %>
-                                    <%= match.goals.home %> : <%= match.goals.away %>
-                                <% } else { %>
-                                    -
-                                <% } %>
-                            </td>
-                            <td><%= match.teams.away.name %></td>
-                            <td><%= match.fixture.status.long %></td>
-                            <td>
-                                <% if (match.fixture.status.elapsed) { %>
-                                    <%= match.fixture.status.elapsed %>'
-                                <% } else if (match.fixture.status.short === 'NS') { %>
-                                    Starts soon
-                                <% } else { %>
-                                    -
-                                <% } %>
-                            </td>
-                        </tr>
-                    <% }); %>
-                <% } else { %>
-                    <tr><td colspan="5">Няма текущи мачове на живо.</td></tr>
-                <% } %>
-            </tbody>
-        </table>
-    </div>
+  <div class="container mt-5">
+    <h1 class="mb-4 fw-bold">Текущи мачове на живо</h1>
 
+    <% if (liveMatches && liveMatches.length) { %>
+      <div class="row g-4">
+        <% liveMatches.forEach((match, idx) => {
+             const url = `/match-details/${match.fixture.id}`;
+             const home = match.teams.home.name;
+             const away = match.teams.away.name;
+             const goalsHome = match.goals ? match.goals.home : '-';
+             const goalsAway = match.goals ? match.goals.away : '-';
+             const statusLong = match.fixture.status.long;
+             const elapsed = match.fixture.status.elapsed;
+
+             let badgeClass = 'bg-secondary';
+             if (/First Half|1st Half/i.test(statusLong))      badgeClass = 'bg-success';
+             else if (/Half[- ]Time/i.test(statusLong))        badgeClass = 'bg-warning text-dark';
+             else if (/Second Half/i.test(statusLong))         badgeClass = 'bg-danger';
+        %>
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+          <a href="<%= url %>" class="text-decoration-none">
+            <div class="card h-100 border-0 <%= idx % 2 ? 'pastel' : 'bg-white' %>">
+              <div class="card-body d-flex flex-column justify-content-between p-3">
+
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <div class="text-truncate fw-medium" style="max-width: 30%;"><%= home %></div>
+                  <div class="text-center flex-shrink-0 px-3">
+                    <span class="fs-4 fw-bold" style="font-family: 'Roboto Mono', monospace;">
+                      <%= goalsHome %> : <%= goalsAway %>
+                    </span>
+                  </div>
+                  <div class="text-truncate text-end fw-medium" style="max-width: 30%;"><%= away %></div>
+                </div>
+
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="badge badge-outline-primary d-flex align-items-center">
+                      <i class="bi bi-clock-fill me-1"></i> <%= statusLong %>
+                    </span>
+
+                    <% if (elapsed) { %>
+                      <small class="text-danger ms-3 ">
+                        <%= elapsed %><span class="blink">'</span>
+                      </small>
+                    <% } else if (match.fixture.status.short === 'NS') { %>
+                      <small class="text-muted ms-3">Starts soon</small>
+                    <% } else { %>
+                      <small class="text-muted ms-3">–</small>
+                    <% } %>
+                  </div>
+                  <button class="btn btn-sm btn-outline-primary">Odds</button>
+                </div>
+
+              </div>
+            </div>
+          </a>
+        </div>
+        <% }); %>
+      </div>
+    <% } else { %>
+      <div class="alert alert-info">
+        Няма текущи мачове на живо.
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Custom CSS -->
+  <style>
+    /* Base font & line-height */
+    body {
+      font-family: 'Inter', sans-serif;
+      line-height: 1.5;
+    }
+
+    /* White vs subtle pastel */
+    .card.bg-white {
+      background-color: #ffffff !important;
+    }
+    .card.pastel {
+      background-color: #f7f9fc !important;
+    }
+
+    /* Outline badge */
+    .badge-outline-primary {
+      color: #0d6efd;
+      border: 1px solid #0d6efd;
+      background: transparent;
+      font-size: .85rem;
+      padding: .25em .5em;
+      border-radius: 1rem;
+    }
+
+    /* Card shadows & hover */
+    .card {
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    /* Blinking apostrophe */
+    @keyframes blink {
+      0%, 50%, 100% { opacity: 0; }
+      25%, 75%     { opacity: 1; }
+    }
+    .blink {
+      display: inline-block;
+      margin-left: 0.1em;
+      animation: blink 2.5s step-start infinite;
+      color: inherit;
+    }
+  </style>
 </body>
 </html>

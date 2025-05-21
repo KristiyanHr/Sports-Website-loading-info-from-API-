@@ -106,3 +106,16 @@
     background-color: #4c00991a; 
     cursor: pointer; 
 }
+body {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url('../css/images/stadium.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #491292; /* Този цвят ще се вижда, ако снимката не зареди */
+
+    color: #e0e0e0;
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+}
