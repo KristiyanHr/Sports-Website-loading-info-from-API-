@@ -13,10 +13,10 @@ const fetchLiveMatches = async (req, res) => {
 
   try {
     const response = await axios.request(options);
-    res.render('index', { title:"Live matches", liveMatches: response.data.response, user: req.session.user });
+    res.render('index', { title:"Мачове на живо", liveMatches: response.data.response, user: req.session.user });
   } catch (error) {
-    console.error('Error while fetching live matches:', error);
-    res.render('index', { title:"Live matches", liveMatches: [] ,user: req.session.user});
+    console.error('Грешка при зареждането на мачове на живо:', error);
+    res.render('index', { title:"Мачове на живо", liveMatches: [] ,user: req.session.user});
   }
 };
 

@@ -3,7 +3,6 @@
 <%- include('../partials/navbar') %>
 
 <div class="container mt-5">
-    <%# Премахнах style-me от row за консистентост с register.ejs %>
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card bg-dark text-light p-4 rounded-3">
@@ -36,7 +35,7 @@
                         <button type="submit" class="btn btn-primary w-100 mt-3">Влезте</button>
                     </form>
                     <div class="text-center mt-3">
-                        <p class="mb-1"><a href="/forgot-password">Забравена парола?</a></p> <%# Разделих линковете %>
+                        <p class="mb-1"><a href="/forgot-password">Забравена парола?</a></p> 
                         <p class="mb-0">Нямате акаунт? <a href="/register">Регистрирайте се</a></p>
                     </div>
 
@@ -46,7 +45,6 @@
     </div> 
 </div> 
 <script>
-    console.log('running script');
     document.addEventListener('DOMContentLoaded', () => {
         const loginForm = document.querySelector('form');
         const usernameInput = document.getElementById('username');
@@ -59,11 +57,11 @@
 
             if(usernameValue === ''){
                 event.preventDefault();
-                alert('Please enter valid username or email address');
+                alert('Моля въведете валидно потребителско име или имейл адрес');
                 return;
             }else if(!emailRegex.test(usernameValue) && !usernameRegex.test(usernameValue)){
                 event.preventDefault();
-                alert('Please enter valid username or email address');
+                alert('Моля въведете валидно потребителско име или имейл адрес');
                 return;
             }
         });

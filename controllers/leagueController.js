@@ -1,33 +1,7 @@
 const League = require('../models/League');
-// const { getFootballLeagues } = require('../apiCalls');
 const Match = require('../models/Match');
 const axios = require('axios');
 
-// const fetchAndStoreLeagues = async (req, res) => {
-//     try {
-//         const leaguesFromApi = await getFootballLeagues();
-
-//         if (leaguesFromApi && leaguesFromApi.length > 0) {
-//             for (const leagueData of leaguesFromApi) {
-//                 const existingLeague = await League.findOne({ apiId: leagueData.league.id });
-
-//                 if (!existingLeague) {
-//                     const newLeague = new League({
-//                         name: leagueData.league.name,
-//                         apiId: leagueData.league.id,
-//                     });
-//                     await newLeague.save();
-//                 }
-//             }
-//             res.send('Successfully fetched and stored new leagues!'); 
-//         } else {
-//             res.send('No new leagues fetched from the API.');
-//         }
-//     } catch (error) {
-//         console.error("Error fetching and storing leagues:", error);
-//         res.status(500).send('Error fetching leagues.');
-//     }
-// };
 
 const homepageLeagues = [
     { name: 'Premier League', identifier: 'premier-league', apiId: 39 ,  logoUrl: 'https://media.api-sports.io/football/leagues/39.png'},
@@ -41,7 +15,7 @@ const homepageLeagues = [
 ];
 
 const league_index = (req, res) => {
-    res.render('leagues/leagueIndex', { title: 'Football Leagues', leagues: homepageLeagues, user: req.session.user});
+    res.render('leagues/leagueIndex', { title: 'Футболни първенства', leagues: homepageLeagues, user: req.session.user});
 };
 
 const league_details = async (req, res) => {
@@ -81,7 +55,7 @@ const league_details = async (req, res) => {
 
         if (cachedMatches.length > 0) {
             res.render(viewName, {
-                title: `Matches in ${selectedLeague.name} on ${queryDate}`,
+                title: `Мачове във ${selectedLeague.name} на ${queryDate}`,
                 leagueName: selectedLeague.name,
                 matches: cachedMatches.map(match => match.matchData),
                 selectedDate: queryDate,
@@ -122,7 +96,6 @@ const league_details = async (req, res) => {
                     try {
                         const savedMatch = await newMatch.save();
                         savedMatches.push(savedMatch);
-                        console.log( new Date(selectedDate).getMonth() > 6 ? new Date(selectedDate).getFullYear() : new Date(selectedDate).getFullYear() - 1);
                         // console.log(`Мач с ID ${match.fixture.id} беше успешно запазен.`); - DEBUGGING
                     } catch (error) {
                         if (error.code !== 11000) {
@@ -130,9 +103,8 @@ const league_details = async (req, res) => {
                         }
                     }
                 }
-                // Render the view with the newly fetched data
                 res.render(viewName, {
-                    title: `Matches in ${selectedLeague.name} on ${queryDate}`,
+                    title: `Мачове във ${selectedLeague.name} на ${queryDate}`,
                     leagueName: selectedLeague.name,
                     matches: matchesFromApi,
                     selectedDate: queryDate,
@@ -140,9 +112,8 @@ const league_details = async (req, res) => {
                     user: req.session.user 
                 });
             } else {
-                // If no matches are returned from the API
                 res.render(viewName, {
-                    title: `Matches in ${selectedLeague.name} on ${queryDate}`,
+                    title: `Мачове във ${selectedLeague.name} на ${queryDate}`,
                     leagueName: selectedLeague.name,
                     matches: [],
                     selectedDate: queryDate,
@@ -152,8 +123,8 @@ const league_details = async (req, res) => {
             }
         }
     } catch (error) {
-        console.error(`Error fetching matches for ${selectedLeague.name}:`, error);
-        res.status(500).send(`Error fetching today's matches for ${selectedLeague.name}.`);
+        console.error(`Грешка при зареждането на срещите ${selectedLeague.name}:`, error);
+        res.status(500).send(`Грешка при зареждането на днешните мачове ${selectedLeague.name}.`);
     }
 };
 

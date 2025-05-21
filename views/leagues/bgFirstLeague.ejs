@@ -3,12 +3,12 @@
     <%- include('../partials/navbar') %>
     <main class="main-content">
         <button class="btn btn-outline-primary btn-sm mb-3 mt-3"
-        onclick="addLeagueToFavourites('<%= selectedLeague.identifier %>')">Add to Favourites</button>
+        onclick="addLeagueToFavourites('<%= selectedLeague.identifier %>')">Добави към Любими</button>
         <div class="date-picker-container">
             <form action="/leagues/bulgarian-first-league" method="GET">
                 <label for="matchDate">Select Date:</label>
                 <input type="date" id="matchDate" name="date" value="<%= selectedDate %>">
-                <button type="submit">View Matches</button>
+                <button type="submit">Виж мачовете</button>
             </form>
         </div>
         <%- include('../partials/fixtures-container') %>

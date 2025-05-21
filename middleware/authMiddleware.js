@@ -1,30 +1,29 @@
 const User = require('../models/user');
 
 const ensureAuthenticated = async (req, res, next) => {
-  console.log('ensureAuthenticated is running');
-  console.log('req.session.user:', req.session.user);
+  
   if (req.session.user) {
     try {
       const user = await User.findById(req.session.user.id);
-      console.log('User found:', user);
+
       if (user) {
         req.user = user;
         return next();
       } else {
-        console.log('User not found in DB, destroying session.');
+        console.log('Потребителят не е намерен в БД, унищожаване на сесията.');
         req.session.destroy(err => {
           if (err) {
-            console.error('Error destroying session:', err);
+            console.error('Грешка при унищожаване на сесията:', err);
           }
           res.redirect('/login');
         });
       }
     } catch (error) {
-      console.error('Error fetching user:', error);
+      console.error('Грешка при зареждането на потребител:', error);
       res.redirect('/login');
     }
   } else {
-    console.log('req.session.user is undefined, redirecting to /login');
+    console.log('req.session.user не е дефинирано, пренасочване към /login');
     res.redirect('/login');
   }
 };

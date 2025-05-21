@@ -42,9 +42,9 @@
                                 <h5 class="mt-4">Любими Лиги</h5>
                                  <hr class="border-secondary">
                                  <% if (profileData.favouriteLeagues && profileData.favouriteLeagues.length > 0) { %>
-                                     <ul class="list-unstyled"> <%# Списък без точки %>
+                                     <ul class="list-unstyled">
                                          <% profileData.favouriteLeagues.forEach(leagueId => { %>
-                                             <li><i class="bi bi-star-fill text-warning me-2"></i><%= leagueId %> <%# Трябва да вземеш името на лигата %></li>
+                                             <li><i class="bi bi-star-fill text-warning me-2"></i><%= leagueId %></li>
                                          <% }); %>
                                      </ul>
                                  <% } else { %>

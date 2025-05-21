@@ -45,7 +45,7 @@ const add_favourite = async (req, res) => {
   
     const leagueIdentifier = req.body.leagueId;
     const userId = req.user._id;
-    console.log('leagueIdentifier received:', leagueIdentifier);
+    // console.log('leagueIdentifier received:', leagueIdentifier);
   
     try {
       const user = await User.findById(userId);
