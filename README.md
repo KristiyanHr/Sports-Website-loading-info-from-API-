@@ -23,7 +23,8 @@ Users can view live scores, match details, and odds — all wrapped in a respons
 
 🎨 Clean and modern UI using Bootstrap 5.
 
-🛠️ Tech Stack
+
+🛠️ Tech Stack:
 Backend: Node.js, Express.js
 
 Frontend: EJS templates, Bootstrap 5, Custom CSS
