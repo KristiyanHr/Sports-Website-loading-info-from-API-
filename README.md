@@ -1,7 +1,7 @@
-                                                              Sports Website – Loading Live Info from API
+🏟️ Sports Website – Loading Live Info from API
 
-🎯 A sports website built with Node.js, Express, EJS, Bootstrap, and MongoDB that fetches and displays live match information from a football API.
-Users can view live scores, match details, and odds, with an attractive and responsive interface.
+🎯 A sports website built with Node.js, Express, EJS, Bootstrap, and MongoDB that fetches and displays live football match information from an external API.
+Users can view live scores, match details, and odds — all wrapped in a responsive, attractive interface.
 
 📸 Demo
 <img width="1342" height="637" alt="leagues" src="https://github.com/user-attachments/assets/a99a0090-45a8-4790-8d60-d46b1499e173" />
@@ -28,14 +28,14 @@ Other: FontAwesome, Google Fonts
 
 🔧 Steps to Setup & Run Locally
 
-1️)Clone the repository:
-git clone https://github.com/KristiyanHr/Sports-Website-loading-info-from-API-.git
-cd Sports-Website-loading-info-from-API-
+1️) Clone the repository:
+<pre> ```bash git clone https://github.com/KristiyanHr/Sports-Website-loading-info-from-API-.git ``` </pre>
+<pre>```bash cd Sports-Website-loading-info-from-API-```</pre>
 
-2)Install dependencies:
+2) Install dependencies:
 npm install
 
-3️)Set up environment variables:
+3️) Set up environment variables:
 Create a .env file with your API key and MongoDB URI:
 
 API_KEY=your_football_api_key
@@ -48,6 +48,12 @@ npm start
 or with nodemon:
 npx nodemon
 
-5️)Open your browser at http://localhost:3000
+5️) Open your browser at http://localhost:3000
 
+📄 Notes
+  You’ll need an account & key for the API-Football API.
 
+  Odds functionality is currently a placeholder — feel free to expand it!
+
+🙌 Contributions
+Pull requests, suggestions, and feedback are welcome!
