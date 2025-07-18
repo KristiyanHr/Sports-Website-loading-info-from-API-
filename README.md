@@ -29,30 +29,37 @@ Other: FontAwesome, Google Fonts
 🔧 Steps to Setup & Run Locally
 
 1️) Clone the repository:
-<pre> ```bash
+<pre>bash
   git clone https://github.com/KristiyanHr/Sports-Website-loading-info-from-API-.git
-  ``` </pre>
-<pre>```bash 
+</pre>
+<pre>bash 
   cd Sports-Website-loading-info-from-API-
-  ```</pre>
+</pre>
 
 2) Install dependencies:
-npm install
+<pre>bash
+  npm install
+</pre>
 
 3️) Set up environment variables:
 Create a .env file with your API key and MongoDB URI:
-
-API_KEY=your_football_api_key
+<pre>.env
+  API_KEY=your_football_api_key
 MONGO_URI=your_mongodb_connection_string
 PORT=3000
+</pre>
 
 4️) Run the app:
-npm start
+<pre>bash
+  npm start
+</pre>
 
 or with nodemon:
-npx nodemon
+<pre>bash
+  npx nodemon
+</pre>
 
-5️) Open your browser at http://localhost:3000
+5️) Open your browser at <pre> http://localhost:3000 </pre>
 
 📄 Notes
   You’ll need an account & key for the API-Football API.
