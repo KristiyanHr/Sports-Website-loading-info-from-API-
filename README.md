@@ -29,8 +29,12 @@ Other: FontAwesome, Google Fonts
 🔧 Steps to Setup & Run Locally
 
 1️) Clone the repository:
-<pre> ```bash git clone https://github.com/KristiyanHr/Sports-Website-loading-info-from-API-.git ``` </pre>
-<pre>```bash cd Sports-Website-loading-info-from-API-```</pre>
+<pre> ```bash
+  git clone https://github.com/KristiyanHr/Sports-Website-loading-info-from-API-.git
+  ``` </pre>
+<pre>```bash 
+  cd Sports-Website-loading-info-from-API-
+  ```</pre>
 
 2) Install dependencies:
 npm install
